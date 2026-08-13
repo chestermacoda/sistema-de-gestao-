@@ -1,0 +1,186 @@
+ public function getRegistrosProperty()
+    {
+        $porPagina = $this->porPagina;
+        $offset = ($this->getPage() - 1) * $porPagina;
+
+        // Constrói WHERE dinâmico
+        $wherePagamento = "p.status = 'Confirmado'";
+        $whereFatura = "f.status IN ('Pendente', 'Vencida', 'Negociada', 'Parcial')";
+
+        // Filtro por tab
+        if ($this->tabAtiva === 'pagas') {
+            $wherePagamento = "p.status = 'Confirmado'";
+            $whereFatura = "1=0";
+        } elseif ($this->tabAtiva === 'pendentes') {
+            $wherePagamento = "1=0";
+            $whereFatura = "f.status IN ('Pendente', 'Vencida', 'Negociada', 'Parcial')";
+        } elseif ($this->tabAtiva === 'estornos') {
+            $wherePagamento = "p.status = 'Estornado'";
+            $whereFatura = "1=0";
+        }
+
+        // Filtro por status no select
+        if ($this->statusFiltro) {
+            switch ($this->statusFiltro) {
+                case 'Pago':
+                    $wherePagamento = "p.status = 'Confirmado'";
+                    $whereFatura = "1=0";
+                    break;
+                case 'Pendente':
+                    $wherePagamento = "p.status IN ('Pendente', 'Parcial')";
+                case 'Em Atraso':
+                    $wherePagamento = "1=0";
+                    $whereFatura = "f.status IN ('Pendente', 'Vencida', 'Negociada')";
+                    break;
+                case 'Estornado':
+                    $wherePagamento = "p.status = 'Estornado'";
+                    $whereFatura = "1=0";
+                    break;
+                case 'Parcial':  // <-- NOVO CASE
+                    $wherePagamento = "p.status = 'Parcial'";
+                    $whereFatura = "f.status = 'Parcial'";
+                    break;
+                case 'Cancelado':
+                    $wherePagamento = "p.status = 'Cancelado'";
+                    $whereFatura = "1=0";
+                    break;
+            }
+        }
+
+        // Filtro por método
+        $metodoWhere = '';
+        if ($this->metodoFiltro && $this->metodoFiltro !== 'todos') {
+            $metodoWhere = " AND p.metodo_pagamento = '" . addslashes($this->metodoFiltro) . "'";
+            $whereFatura = "1=0";
+        }
+
+        // Filtro por mês
+        $mesWherePag = '';
+        $mesWhereFat = '';
+        if ($this->mesFiltro && $this->mesFiltro !== 'atual' && $this->mesFiltro !== 'ultimos12') {
+            $mesWherePag = " AND p.data_pagamento LIKE '%" . addslashes($this->mesFiltro) . "%'";
+            $mesWhereFat = " AND f.data_vencimento LIKE '%" . addslashes($this->mesFiltro) . "%'";
+        } elseif ($this->mesFiltro === 'ultimos12') {
+            $dataLimite = now()->subMonths(12)->format('Y-m-d');
+            $mesWherePag = " AND p.data_pagamento >= '{$dataLimite}'";
+            $mesWhereFat = " AND f.data_vencimento >= '{$dataLimite}'";
+        } elseif ($this->mesFiltro === 'atual' || empty($this->mesFiltro)) {
+            $mesAtual = now()->format('Y-m');
+            $mesWherePag = " AND (p.data_pagamento LIKE '%{$mesAtual}%' OR p.data_pagamento IS NULL)";
+            $mesWhereFat = " AND (f.data_vencimento LIKE '%{$mesAtual}%' OR f.mes_referencia = '" . now()->format('m/Y') . "')";
+        }
+
+        // SOLUÇÃO DO ERRO: Busca por texto dividida para cada tipo de registro
+        $buscaWherePag = '';
+        $buscaWhereFat = '';
+
+        if ($this->busca) {
+            $termo = '%' . addslashes($this->busca) . '%';
+
+            // Para pagamentos: inclui p.codigo_transacao
+            $buscaWherePag = " AND (
+            p.codigo_transacao LIKE '{$termo}' OR
+            f.codigo_fatura LIKE '{$termo}' OR
+            c.nome_completo LIKE '{$termo}' OR
+            c.numero_matricula LIKE '{$termo}'
+        )";
+
+            // Para faturas: REMOVE o p.codigo_transacao pois o alias 'p' não existe aqui
+            $buscaWhereFat = " AND (
+            f.codigo_fatura LIKE '{$termo}' OR
+            c.nome_completo LIKE '{$termo}' OR
+            c.numero_matricula LIKE '{$termo}'
+        )";
+        }
+
+        // Query UNION com os WHERES de busca separados de forma correta
+        $sql = "
+        SELECT * FROM (
+            SELECT
+                'pagamento' as tipo_registro,
+                p.id as pagamento_id,
+                p.fatura_id,
+                p.valor_pago as valor,
+                p.metodo_pagamento,
+                p.status as status_pagamento,
+                p.codigo_transacao,
+                p.data_pagamento,
+                p.hora_pagamento,
+                f.id as fat_id,
+                f.codigo_fatura,
+                f.status as status_fatura,
+                f.data_vencimento,
+                f.valor_total as valor_fatura,
+                c.id as cliente_id,
+                c.nome_completo,
+                c.numero_matricula
+            FROM pagamentos p
+            JOIN faturas f ON p.fatura_id = f.id
+            JOIN clientes c ON p.cliente_id = c.id
+            WHERE {$wherePagamento} {$metodoWhere} {$mesWherePag} {$buscaWherePag}
+
+            UNION ALL
+
+            SELECT
+                'fatura' as tipo_registro,
+                NULL as pagamento_id,
+                f.id as fatura_id,
+                f.valor_consumo as valor,
+                NULL as metodo_pagamento,
+                'Pendente' as status_pagamento,
+                NULL as codigo_transacao,
+                NULL as data_pagamento,
+                NULL as hora_pagamento,
+                f.id as fat_id,
+                f.codigo_fatura,
+                f.status as status_fatura,
+                f.data_vencimento,
+                f.valor_total as valor_fatura,
+                c.id as cliente_id,
+                c.nome_completo,
+                c.numero_matricula
+            FROM faturas f
+            JOIN clientes c ON f.cliente_id = c.id
+            WHERE {$whereFatura}
+                AND f.id NOT IN (SELECT fatura_id FROM pagamentos WHERE status = 'Confirmado')
+                {$mesWhereFat} {$buscaWhereFat}
+        ) as registros
+        ORDER BY
+            CASE WHEN data_pagamento IS NOT NULL THEN 0 ELSE 1 END,
+            data_pagamento DESC,
+            data_vencimento DESC
+        LIMIT {$porPagina} OFFSET {$offset}
+    ";
+
+        $registros = DB::select($sql);
+
+        // Conta total para paginação com a mesma correção
+        $countSql = "
+        SELECT COUNT(*) as total FROM (
+            SELECT p.id
+            FROM pagamentos p
+            JOIN faturas f ON p.fatura_id = f.id
+            JOIN clientes c ON p.cliente_id = c.id
+            WHERE {$wherePagamento} {$metodoWhere} {$mesWherePag} {$buscaWherePag}
+
+            UNION ALL
+
+            SELECT f.id
+            FROM faturas f
+            JOIN clientes c ON f.cliente_id = c.id
+            WHERE {$whereFatura}
+                AND f.id NOT IN (SELECT fatura_id FROM pagamentos WHERE status = 'Confirmado')
+                {$mesWhereFat} {$buscaWhereFat}
+        ) as total
+    ";
+        $total = DB::selectOne($countSql)->total;
+
+        // Cria paginator manual
+        return new \Illuminate\Pagination\LengthAwarePaginator(
+            collect($registros)->map(fn($item) => (array) $item),
+            $total,
+            $porPagina,
+            $this->getPage(),
+            ['path' => request()->url()]
+        );
+    }

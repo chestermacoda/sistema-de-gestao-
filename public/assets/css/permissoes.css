@@ -1,0 +1,1018 @@
+/* ============================================
+   CSS ESPECÍFICO - PÁGINA DE PERMISSÕES & ROLES
+   Prefixo: perm- (para evitar conflitos)
+   ============================================ */
+
+/* Tabs de Permissões */
+.perm-tab-content {
+    display: none;
+}
+
+.perm-tab-content.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Matriz de Permissões */
+.perm-matriz-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    font-size: var(--label-size);
+}
+
+.perm-matriz-table th {
+    padding: var(--space-md);
+    background: var(--neutral);
+    border-bottom: 2px solid var(--neutral-dark);
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: var(--small-size);
+    min-width: 120px;
+}
+
+.perm-matriz-table th:first-child {
+    text-align: left;
+    min-width: 220px;
+}
+
+.perm-matriz-table td {
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--neutral-dark);
+    text-align: center;
+    vertical-align: middle;
+}
+
+.perm-matriz-table td:first-child {
+    text-align: left;
+}
+
+.perm-matriz-table tr:hover td {
+    background: var(--neutral);
+}
+
+/* Role Header na Matriz */
+.perm-role-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.perm-role-count {
+    font-size: var(--small-size);
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+/* Badges de Role */
+.perm-role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: 9999px;
+    font-size: var(--small-size);
+    font-weight: 600;
+}
+
+.perm-role-badge.perm-superadmin {
+    background: var(--danger-light);
+    color: var(--danger);
+}
+
+.perm-role-badge.perm-admin {
+    background: rgba(0, 51, 102, 0.1);
+    color: var(--primary);
+}
+
+.perm-role-badge.perm-leiturista {
+    background: rgba(0, 131, 143, 0.1);
+    color: var(--tertiary);
+}
+
+.perm-role-badge.perm-financeiro {
+    background: rgba(84, 110, 122, 0.1);
+    color: var(--secondary);
+}
+
+.perm-role-badge.perm-operador {
+    background: var(--neutral-dark);
+    color: var(--text-secondary);
+}
+
+.perm-role-badge.perm-gerente {
+    background: rgba(217, 119, 6, 0.1);
+    color: var(--warning);
+}
+
+.perm-role-badge.perm-viewer {
+    background: rgba(148, 163, 184, 0.1);
+    color: var(--text-muted);
+}
+
+/* Toggle de Permissão na Matriz */
+.perm-toggle {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.perm-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.perm-toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: var(--neutral-darker);
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.perm-toggle-slider:before {
+    content: "";
+    position: absolute;
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background: var(--white);
+    border-radius: 50%;
+    transition: 0.3s;
+    box-shadow: var(--shadow-sm);
+}
+
+.perm-toggle input:checked + .perm-toggle-slider {
+    background: var(--success);
+}
+
+.perm-toggle input:checked + .perm-toggle-slider:before {
+    transform: translateX(16px);
+}
+
+.perm-toggle input:disabled + .perm-toggle-slider {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.perm-toggle input:disabled + .perm-toggle-slider:before {
+    background: var(--neutral-darker);
+}
+
+/* Nome da Permissão */
+.perm-nome {
+    font-family: "SF Mono", monospace;
+    font-size: var(--label-size);
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Linha de Módulo */
+.perm-modulo-row {
+    background: var(--neutral);
+}
+
+.perm-modulo-row td {
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--neutral-dark);
+}
+
+.perm-modulo-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: var(--label-size);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.perm-modulo-title svg {
+    color: var(--primary);
+}
+
+/* Grid de Roles */
+.perm-roles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--space-lg);
+}
+
+/* Cards de Role */
+.perm-role-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--neutral-dark);
+    padding: var(--space-lg);
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.perm-role-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.perm-role-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--primary);
+}
+
+.perm-superadmin-card::before {
+    /* background: var(--danger); */
+}
+.perm-admin-card::before {
+    background: var(--primary);
+}
+.perm-leiturista-card::before {
+    background: var(--tertiary);
+}
+.perm-financeiro-card::before {
+    background: var(--secondary);
+}
+.perm-operador-card::before {
+    background: var(--neutral-darker);
+}
+.perm-gerente-card::before {
+    background: var(--warning);
+}
+.perm-viewer-card::before {
+    background: var(--text-muted);
+}
+
+.perm-role-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+    padding-left: var(--space-sm);
+}
+
+.perm-role-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    flex-shrink: 0;
+}
+
+.perm-role-icon.perm-superadmin {
+    /* background: linear-gradient(135deg, var(--danger), #b91c1c); */
+}
+/* .perm-role-icon.perm-admin {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+} */
+.perm-role-icon.perm-leiturista {
+    background: linear-gradient(135deg, var(--tertiary), var(--tertiary-light));
+}
+.perm-role-icon.perm-financeiro {
+    background: linear-gradient(
+        135deg,
+        var(--secondary),
+        var(--secondary-light)
+    );
+}
+.perm-role-icon.perm-operador {
+    background: linear-gradient(
+        135deg,
+        var(--neutral-darker),
+        var(--text-muted)
+    );
+}
+.perm-role-icon.perm-gerente {
+    background: linear-gradient(135deg, var(--warning), #b45309);
+}
+.perm-role-icon.perm-viewer {
+    background: linear-gradient(
+        135deg,
+        var(--text-muted),
+        var(--text-secondary)
+    );
+}
+
+.perm-role-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.perm-role-name {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.perm-role-slug {
+    font-size: var(--small-size);
+    color: var(--text-muted);
+    font-family: monospace;
+    margin-top: 2px;
+}
+
+.perm-role-stats {
+    display: flex;
+    gap: var(--space-lg);
+    padding: var(--space-md) 0;
+    margin: var(--space-md) 0;
+    border-top: 1px solid var(--neutral-dark);
+    border-bottom: 1px solid var(--neutral-dark);
+    padding-left: var(--space-sm);
+}
+
+.perm-stat {
+    display: flex;
+    flex-direction: column;
+}
+
+.perm-stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.perm-stat-label {
+    font-size: var(--small-size);
+    color: var(--text-muted);
+}
+
+.perm-role-desc {
+    font-size: var(--label-size);
+    color: var(--text-secondary);
+    line-height: 1.5;
+    padding-left: var(--space-sm);
+    margin-bottom: var(--space-md);
+}
+
+.perm-role-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: var(--space-sm);
+}
+
+.perm-role-created {
+    font-size: var(--small-size);
+    color: var(--text-muted);
+}
+
+/* Lista de Permissões */
+.perm-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    font-size: var(--label-size);
+}
+
+.perm-list-table th {
+    padding: var(--space-md);
+    background: var(--neutral);
+    border-bottom: 2px solid var(--neutral-dark);
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: var(--small-size);
+}
+
+.perm-list-table td {
+    padding: var(--space-md);
+    border-bottom: 1px solid var(--neutral-dark);
+    vertical-align: middle;
+}
+
+.perm-list-table tr:hover td {
+    background: var(--neutral);
+}
+
+.perm-name-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.perm-tag {
+    font-family: "SF Mono", monospace;
+    font-size: var(--label-size);
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.perm-desc {
+    font-size: var(--small-size);
+    color: var(--text-muted);
+}
+
+.perm-modulo-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    background: rgba(0, 51, 102, 0.08);
+    color: var(--primary);
+    font-size: var(--small-size);
+    font-weight: 600;
+}
+
+.perm-guard-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    background: var(--neutral);
+    color: var(--text-secondary);
+    font-size: var(--small-size);
+    font-weight: 600;
+    font-family: monospace;
+}
+
+.perm-count-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: 9999px;
+    background: var(--neutral);
+    color: var(--text-secondary);
+    font-size: var(--small-size);
+    font-weight: 600;
+}
+
+/* Tabela de Usuários por Role */
+.perm-users-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    font-size: var(--label-size);
+}
+
+.perm-users-table th {
+    padding: var(--space-md);
+    background: var(--neutral);
+    border-bottom: 2px solid var(--neutral-dark);
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: var(--small-size);
+}
+
+.perm-users-table td {
+    padding: var(--space-md);
+    border-bottom: 1px solid var(--neutral-dark);
+    vertical-align: middle;
+}
+
+.perm-users-table tr:hover td {
+    background: var(--neutral);
+}
+
+.perm-user-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.perm-user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-weight: 600;
+    font-size: var(--label-size);
+    flex-shrink: 0;
+}
+
+.perm-user-avatar.perm-superadmin {
+    background: linear-gradient(135deg, var(--danger), #b91c1c);
+}
+.perm-user-avatar.perm-admin {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+}
+.perm-user-avatar.perm-leiturista {
+    background: linear-gradient(135deg, var(--tertiary), var(--tertiary-light));
+}
+.perm-user-avatar.perm-financeiro {
+    background: linear-gradient(
+        135deg,
+        var(--secondary),
+        var(--secondary-light)
+    );
+}
+.perm-user-avatar.perm-operador {
+    background: linear-gradient(
+        135deg,
+        var(--neutral-darker),
+        var(--text-muted)
+    );
+}
+.perm-user-avatar.perm-gerente {
+    background: linear-gradient(135deg, var(--warning), #b45309);
+}
+.perm-user-avatar.perm-viewer {
+    background: linear-gradient(
+        135deg,
+        var(--text-muted),
+        var(--text-secondary)
+    );
+}
+
+.perm-user-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.perm-user-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.perm-user-email {
+    font-size: var(--small-size);
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.perm-matricula {
+    font-family: monospace;
+    font-size: var(--small-size);
+    color: var(--text-secondary);
+    background: var(--neutral);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+}
+
+.perm-role-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: 9999px;
+    font-size: var(--small-size);
+    font-weight: 600;
+}
+
+.perm-role-pill.perm-superadmin {
+    background: var(--danger-light);
+    color: var(--danger);
+}
+.perm-role-pill.perm-admin {
+    background: rgba(0, 51, 102, 0.1);
+    color: var(--primary);
+}
+.perm-role-pill.perm-leiturista {
+    background: rgba(0, 131, 143, 0.1);
+    color: var(--tertiary);
+}
+.perm-role-pill.perm-financeiro {
+    background: rgba(84, 110, 122, 0.1);
+    color: var(--secondary);
+}
+.perm-role-pill.perm-operador {
+    background: var(--neutral-dark);
+    color: var(--text-secondary);
+}
+.perm-role-pill.perm-gerente {
+    background: rgba(217, 119, 6, 0.1);
+    color: var(--warning);
+}
+.perm-role-pill.perm-viewer {
+    background: rgba(148, 163, 184, 0.1);
+    color: var(--text-muted);
+}
+.perm-role-pill.perm-orphan {
+    background: var(--danger-light);
+    color: var(--danger);
+}
+
+.perm-role-pill-sm {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.perm-role-pill-sm.perm-viewer {
+    background: rgba(148, 163, 184, 0.1);
+    color: var(--text-muted);
+}
+
+.perm-empty {
+    color: var(--text-muted);
+    font-size: var(--small-size);
+}
+
+.perm-perm-direct {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    background: rgba(0, 51, 102, 0.08);
+    color: var(--primary);
+    font-size: var(--small-size);
+    font-weight: 600;
+    font-family: monospace;
+}
+
+.perm-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: 9999px;
+    font-size: var(--small-size);
+    font-weight: 600;
+}
+
+.perm-status-badge.perm-ativo {
+    background: var(--success-light);
+    color: var(--success);
+}
+.perm-status-badge.perm-pendente {
+    background: var(--warning-light);
+    color: var(--warning);
+}
+.perm-status-badge.perm-inativo {
+    background: var(--danger-light);
+    color: var(--danger);
+}
+
+.perm-orphan-row {
+    background: rgba(220, 38, 38, 0.02);
+}
+
+.perm-orphan-row:hover td {
+    background: rgba(220, 38, 38, 0.04);
+}
+
+/* Seletor de Permissões no Modal */
+.perm-role-permissoes-select {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    /* max-height: 400px; */
+    overflow-y: auto;
+    border: 1px solid var(--neutral-dark);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm);
+}
+
+.perm-modulo-group {
+    border: 1px solid var(--neutral-dark);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.perm-modulo-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-md);
+    background: var(--neutral);
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: var(--label-size);
+    transition: background 0.2s;
+    user-select: none;
+}
+
+.perm-modulo-header:hover {
+    background: var(--neutral-dark);
+}
+
+.perm-modulo-header svg {
+    color: var(--primary);
+}
+
+.perm-modulo-toggle {
+    margin-left: auto;
+    font-size: 10px;
+    transition: transform 0.2s;
+}
+
+.perm-modulo-group.collapsed .perm-modulo-toggle {
+    transform: rotate(-180deg);
+}
+
+.perm-modulo-group.collapsed .perm-modulo-list {
+    display: none;
+}
+
+.perm-modulo-list {
+    padding: var(--space-sm) var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.perm-checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-xs) 0;
+    cursor: pointer;
+    font-size: var(--label-size);
+    color: var(--text-primary);
+    transition: color 0.2s;
+}
+
+.perm-checkbox-item:hover {
+    color: var(--primary);
+}
+
+.perm-checkbox-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+/* Color Picker */
+.perm-color-picker {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+}
+
+.perm-color-option {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.perm-color-option:hover {
+    transform: scale(1.1);
+}
+
+.perm-color-option.selected {
+    border-color: var(--text-primary);
+    box-shadow:
+        0 0 0 2px var(--white),
+        0 0 0 4px var(--text-primary);
+}
+
+.perm-color-option.selected::after {
+    content: "✓";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.perm-color-primary {
+    background: var(--primary);
+}
+.perm-color-secondary {
+    background: var(--secondary);
+}
+.perm-color-tertiary {
+    background: var(--tertiary);
+}
+.perm-color-success {
+    background: var(--success);
+}
+.perm-color-warning {
+    background: var(--warning);
+}
+.perm-color-danger {
+    background: var(--danger);
+}
+.perm-color-purple {
+    background: #7c3aed;
+}
+.perm-color-orange {
+    background: #ea580c;
+}
+
+/* Detalhes da Role (Modal Ver) */
+.perm-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+}
+
+.perm-detail-section {
+    background: var(--neutral);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+}
+
+.perm-detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--neutral-dark);
+    font-size: var(--label-size);
+}
+
+.perm-detail-row:last-child {
+    border-bottom: none;
+}
+
+.perm-detail-label {
+    color: var(--text-muted);
+}
+
+.perm-detail-value {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.perm-modulos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-md);
+}
+
+.perm-modulo-categoria {
+    background: var(--neutral);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+}
+
+.perm-modulo-categoria-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: var(--label-size);
+    margin-bottom: var(--space-sm);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--neutral-dark);
+}
+
+.perm-modulo-categoria-title svg {
+    color: var(--primary);
+}
+
+.perm-modulo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-xs) 0;
+    font-size: var(--small-size);
+    font-family: monospace;
+}
+
+.perm-modulo-label {
+    color: var(--text-secondary);
+}
+
+/* Modal Gerenciar User Roles */
+.perm-user-roles-modal {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.perm-user-roles-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: var(--neutral);
+    border-radius: var(--radius-md);
+}
+
+.perm-user-roles-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.perm-user-role-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md);
+    border: 1px solid var(--neutral-dark);
+    border-radius: var(--radius-md);
+    transition: all 0.2s;
+}
+
+.perm-user-role-item:hover {
+    border-color: var(--primary-lighter);
+    background: rgba(0, 51, 102, 0.02);
+}
+
+.perm-user-role-item.perm-active {
+    border-color: var(--success);
+    background: var(--success-light);
+}
+
+.perm-user-role-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.perm-user-role-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-weight: 600;
+}
+
+.perm-user-role-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.perm-user-role-desc {
+    font-size: var(--small-size);
+    color: var(--text-muted);
+}
+
+/* Responsivo */
+@media (max-width: 1024px) {
+    .perm-matriz-table {
+        font-size: var(--small-size);
+    }
+
+    .perm-matriz-table th,
+    .perm-matriz-table td {
+        padding: var(--space-sm);
+    }
+
+    .perm-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .perm-modulos-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .perm-roles-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .perm-role-stats {
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+
+    .perm-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .perm-modulos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .perm-user-cell {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-sm);
+    }
+
+    .perm-role-card-header {
+        flex-wrap: wrap;
+    }
+
+    .perm-matriz-table {
+        min-width: 800px;
+    }
+}

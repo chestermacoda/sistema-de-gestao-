@@ -1,0 +1,870 @@
+/* ============================================
+   CSS ESPECÍFICO - PÁGINA DE ROTEIRO DE LEITURISTAS
+   Prefixo: rot- (para evitar conflitos)
+   ============================================ */
+
+/* ============================================
+   GRID DE ROTEIROS
+   ============================================ */
+
+.rot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: var(--space-lg);
+}
+
+/* Card de Roteiro */
+.rot-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--neutral-dark);
+  padding: var(--space-lg);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.rot-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.rot-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--primary);
+}
+
+.rot-card.rot-andamento::before {
+  background: var(--primary);
+}
+
+.rot-card.rot-pendente::before {
+  background: var(--warning);
+}
+
+.rot-card.rot-concluido::before {
+  background: var(--success);
+}
+
+.rot-card.rot-cancelado::before {
+  background: var(--danger);
+}
+
+.rot-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-md);
+  padding-left: var(--space-sm);
+}
+
+.rot-titulo {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.rot-subtitulo {
+  font-size: var(--label-size);
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.rot-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 9999px;
+  font-size: var(--small-size);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rot-status-badge.rot-andamento {
+  background: rgba(0, 51, 102, 0.1);
+  color: var(--primary);
+}
+
+.rot-status-badge.rot-pendente {
+  background: var(--warning-light);
+  color: var(--warning);
+}
+
+.rot-status-badge.rot-concluido {
+  background: var(--success-light);
+  color: var(--success);
+}
+
+.rot-status-badge.rot-cancelado {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+.rot-body {
+  padding-left: var(--space-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.rot-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--label-size);
+}
+
+.rot-info-label {
+  color: var(--text-muted);
+}
+
+.rot-info-value {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Progress Box */
+.rot-progress-box {
+  background: var(--neutral);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-top: var(--space-sm);
+}
+
+.rot-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--neutral-dark);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.rot-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* Stats Mini */
+.rot-stats-mini {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--neutral-dark);
+}
+
+.rot-stat-mini {
+  text-align: center;
+}
+
+.rot-stat-mini-valor {
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-family: monospace;
+}
+
+.rot-stat-mini-label {
+  font-size: var(--small-size);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.rot-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--neutral-dark);
+  padding-left: var(--space-sm);
+}
+
+.rot-data {
+  font-size: var(--small-size);
+  color: var(--text-muted);
+}
+
+/* ============================================
+   GRID DE LEITURISTAS
+   ============================================ */
+
+.rot-leituristas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-lg);
+}
+
+.rot-leiturista-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--neutral-dark);
+  padding: var(--space-lg);
+  transition: all 0.2s ease;
+}
+
+.rot-leiturista-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.rot-leiturista-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.rot-leiturista-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-weight: 700;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.rot-leiturista-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.rot-leiturista-nome {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.rot-leiturista-matricula {
+  font-size: var(--small-size);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.rot-leiturista-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.rot-leiturista-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+
+.rot-leiturista-stat {
+  text-align: center;
+  padding: var(--space-md);
+  background: var(--neutral);
+  border-radius: var(--radius-md);
+}
+
+.rot-leiturista-stat-valor {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  font-family: monospace;
+}
+
+.rot-leiturista-stat-label {
+  font-size: var(--small-size);
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.rot-leiturista-zonas,
+.rot-leiturista-roteiros {
+  margin-top: var(--space-sm);
+}
+
+.rot-leiturista-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--neutral-dark);
+}
+
+/* ============================================
+   GRID DE ZONAS
+   ============================================ */
+
+.rot-zonas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-lg);
+}
+
+.rot-zona-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--neutral-dark);
+  padding: var(--space-lg);
+  transition: all 0.2s ease;
+}
+
+.rot-zona-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.rot-zona-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.rot-zona-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.rot-zona-info {
+  flex: 1;
+}
+
+.rot-zona-nome {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.rot-zona-medidores {
+  font-size: var(--label-size);
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.rot-zona-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.rot-zona-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+
+.rot-zona-stat {
+  text-align: center;
+}
+
+.rot-zona-stat-valor {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: monospace;
+}
+
+.rot-zona-stat-label {
+  font-size: var(--small-size);
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.rot-zona-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.rot-zona-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--neutral-dark);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.rot-zona-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.rot-zona-leiturista {
+  padding: var(--space-md);
+  background: var(--neutral);
+  border-radius: var(--radius-md);
+}
+
+.rot-leiturista-avatar-sm {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: var(--label-size);
+  flex-shrink: 0;
+}
+
+.rot-zona-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--neutral-dark);
+}
+
+/* ============================================
+   MODAL: ATRIBUIR ROTEIRO
+   ============================================ */
+
+.rot-medidores-selecao {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid var(--neutral-dark);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm);
+}
+
+.rot-medidor-item {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  transition: background 0.2s;
+}
+
+.rot-medidor-item:hover {
+  background: var(--neutral);
+}
+
+/* ============================================
+   MODAL: PRÉ-VISUALIZAR ROTEIRO
+   ============================================ */
+
+.rot-roteiro-preview {
+  border: 1px solid var(--neutral-dark);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.rot-roteiro-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--neutral);
+  border-bottom: 1px solid var(--neutral-dark);
+}
+
+.rot-roteiro-lista {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.rot-roteiro-item-preview {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--neutral-dark);
+  transition: background 0.2s;
+}
+
+.rot-roteiro-item-preview:hover {
+  background: var(--neutral);
+}
+
+.rot-roteiro-item-preview.rot-ok {
+  border-left: 3px solid var(--success);
+}
+
+.rot-roteiro-item-preview.rot-pendente {
+  border-left: 3px solid var(--warning);
+}
+
+.rot-roteiro-item-preview.rot-anomalia {
+  border-left: 3px solid var(--danger);
+}
+
+.rot-roteiro-numero {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--small-size);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.rot-roteiro-info-preview {
+  flex: 1;
+  min-width: 0;
+}
+
+.rot-roteiro-endereco-preview {
+  font-weight: 600;
+  font-size: var(--label-size);
+  color: var(--text-primary);
+}
+
+.rot-roteiro-medidor-preview {
+  font-size: var(--small-size);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.rot-roteiro-status-preview {
+  font-size: var(--small-size);
+  font-weight: 600;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.rot-roteiro-status-preview.rot-ok {
+  background: var(--success-light);
+  color: var(--success);
+}
+
+.rot-roteiro-status-preview.rot-pendente {
+  background: var(--warning-light);
+  color: var(--warning);
+}
+
+.rot-roteiro-status-preview.rot-anomalia {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+/* ============================================
+   TIMELINE DO ROTEIRO
+   ============================================ */
+
+.rot-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  position: relative;
+  padding-left: var(--space-xl);
+}
+
+.rot-timeline::before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--neutral-dark);
+}
+
+.rot-timeline-item {
+  position: relative;
+  background: var(--neutral);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.rot-timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -27px;
+  top: 16px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 2px solid var(--white);
+}
+
+.rot-timeline-item.rot-ok::before {
+  background: var(--success);
+}
+
+.rot-timeline-item.rot-pendente::before {
+  background: var(--warning);
+}
+
+.rot-timeline-item.rot-anomalia::before {
+  background: var(--danger);
+}
+
+.rot-timeline-title {
+  font-weight: 600;
+  font-size: var(--label-size);
+  color: var(--text-primary);
+}
+
+.rot-timeline-desc {
+  font-size: var(--small-size);
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.rot-timeline-date {
+  font-size: var(--small-size);
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ============================================
+   MODAL: RASTREAMENTO
+   ============================================ */
+
+.rot-rastreamento-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+}
+
+@media (max-width: 768px) {
+  .rot-rastreamento-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rot-rastreamento-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.rot-rastreamento-card {
+  background: var(--neutral);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+}
+
+.rot-rastreamento-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.rot-rastreamento-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+
+.rot-rastreamento-stat {
+  text-align: center;
+  padding: var(--space-md);
+  background: var(--white);
+  border-radius: var(--radius-md);
+}
+
+.rot-rastreamento-stat-valor {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  font-family: monospace;
+}
+
+.rot-rastreamento-stat-label {
+  font-size: var(--small-size);
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.rot-atividades-lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.rot-atividade-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--white);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--neutral-dark);
+  transition: all 0.2s ease;
+}
+
+.rot-atividade-item:hover {
+  background: var(--neutral);
+  transform: translateX(4px);
+}
+
+.rot-atividade-hora {
+  font-size: var(--small-size);
+  font-weight: 700;
+  color: var(--primary);
+  font-family: monospace;
+  min-width: 48px;
+  text-align: center;
+  padding: var(--space-xs) var(--space-sm);
+  background: rgba(0, 51, 102, 0.08);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.rot-atividade-conteudo {
+  flex: 1;
+  min-width: 0;
+}
+
+.rot-atividade-titulo {
+  font-weight: 600;
+  font-size: var(--label-size);
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.rot-atividade-desc {
+  font-size: var(--small-size);
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.rot-rastreamento-mapa {
+  min-height: 400px;
+}
+
+/* ============================================
+   TAB CONTENT ROTEIRO
+   ============================================ */
+
+.tab-content-roteiro {
+  display: none;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.tab-content-roteiro[style*="display: block"],
+.tab-content-roteiro.active {
+  display: block;
+}
+
+/* ============================================
+   ANIMAÇÕES
+   ============================================ */
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(5, 150, 105, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(5, 150, 105, 0);
+  }
+}
+
+/* ============================================
+   RESPONSIVIDADE
+   ============================================ */
+
+@media (max-width: 1024px) {
+  .rot-grid {
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  }
+
+  .rot-leituristas-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .rot-zonas-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .rot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rot-leituristas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rot-zonas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rot-stats-mini {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .rot-rastreamento-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rot-card-header {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .rot-status-badge {
+    align-self: flex-start;
+  }
+
+  .rot-footer {
+    flex-direction: column;
+    gap: var(--space-sm);
+    align-items: flex-start;
+  }
+
+  .rot-leiturista-footer {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .rot-zona-footer {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .rot-stats-mini {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-xs);
+  }
+
+  .rot-stat-mini-valor {
+    font-size: 1rem;
+  }
+
+  .rot-leiturista-stats {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+
+  .rot-zona-stats {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+
+  .rot-rastreamento-stats {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+}

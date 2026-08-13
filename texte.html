@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fatura — AquaNexus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #003366;
+            --primary-light: #1a4d7a;
+            --primary-lighter: #336699;
+            --secondary: #546e7a;
+            --tertiary: #00838f;
+            --tertiary-light: #00acc1;
+            --neutral: #f8fafc;
+            --neutral-dark: #e2e8f0;
+            --neutral-darker: #cbd5e1;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --white: #ffffff;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --success: #059669;
+            --success-light: #d1fae5;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+            --purple: #7c3aed;
+            --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--neutral);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .fatura-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            min-height: 100vh;
+        }
+
+        @media (min-width: 801px) {
+            .fatura-container {
+                margin: 24px auto;
+                border-radius: 16px;
+                box-shadow: var(--shadow-xl);
+                overflow: hidden;
+                min-height: auto;
+            }
+        }
+
+        /* ─── CABEÇALHO ─── */
+        .fatura-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, var(--tertiary) 100%);
+            color: white;
+            padding: 32px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fatura-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .fatura-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50%;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .fatura-tipo-badge {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .fatura-numero-area h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .fatura-ref {
+            font-size: 0.875rem;
+            opacity: 0.85;
+            margin-top: 4px;
+            font-family: monospace;
+        }
+
+        .fatura-status-main {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .status-badge-large {
+            padding: 8px 20px;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-paga {
+            background: var(--success);
+            color: white;
+        }
+
+        .status-pendente {
+            background: var(--warning);
+            color: white;
+        }
+
+        .status-vencida {
+            background: var(--danger);
+            color: white;
+        }
+
+        .status-parcial {
+            background: var(--tertiary);
+            color: white;
+        }
+
+        .fatura-emissao {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        /* ─── CORPO ─── */
+        .fatura-body {
+            padding: 32px 24px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-bottom: 32px;
+            padding-bottom: 32px;
+            border-bottom: 2px solid var(--neutral-dark);
+        }
+
+        @media (max-width: 600px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+
+        .info-block h4 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .info-nome {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .info-detalhe {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .info-detalhe strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .periodo-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--neutral);
+            padding: 16px 24px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .periodo-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .periodo-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .periodo-valor {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .periodo-separador {
+            width: 1px;
+            height: 30px;
+            background: var(--neutral-dark);
+        }
+
+        @media (max-width: 600px) {
+            .periodo-separador {
+                display: none;
+            }
+
+            .periodo-box {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title svg {
+            color: var(--tertiary);
+        }
+
+        .consumo-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 32px;
+        }
+
+        .consumo-table th {
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            background: var(--neutral);
+            border-bottom: 2px solid var(--neutral-dark);
+        }
+
+        .consumo-table th:last-child {
+            text-align: right;
+        }
+
+        .consumo-table td {
+            padding: 14px 16px;
+            font-size: 0.875rem;
+            border-bottom: 1px solid var(--neutral-dark);
+            vertical-align: middle;
+        }
+
+        .consumo-table td:last-child {
+            text-align: right;
+            font-weight: 600;
+            font-family: var(--font-body);
+        }
+
+        .consumo-table tr:hover {
+            background: var(--neutral);
+        }
+
+        .consumo-total-row {
+            background: linear-gradient(90deg, var(--neutral) 0%, rgba(0, 51, 102, 0.04) 100%);
+        }
+
+        .consumo-total-row td {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--primary);
+            border-bottom: none;
+        }
+
+        .consumo-total-row td:last-child {
+            font-size: 1.125rem;
+        }
+
+        @media (max-width: 600px) {
+            .consumo-table {
+                display: block;
+            }
+
+            .consumo-table thead {
+                display: none;
+            }
+
+            .consumo-table tbody,
+            .consumo-table tr {
+                display: block;
+            }
+
+            .consumo-table td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 16px;
+                border-bottom: 1px solid var(--neutral-dark);
+            }
+
+            .consumo-table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--text-muted);
+                font-size: 0.75rem;
+                text-transform: uppercase;
+            }
+
+            .consumo-table td:last-child {
+                text-align: left;
+            }
+
+            .consumo-total-row td {
+                font-size: 1rem;
+            }
+        }
+
+        .valor-total-box {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 12px;
+            padding: 32px;
+            color: white;
+            text-align: center;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .valor-total-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .valor-total-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .valor-total-valor {
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: var(--font-body);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .valor-total-vencimento {
+            font-size: 0.875rem;
+            opacity: 0.85;
+            margin-top: 12px;
+            position: relative;
+        }
+
+        .pagamentos-section {
+            margin-bottom: 32px;
+        }
+
+        .pagamento-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: var(--success-light);
+            border: 1px solid rgba(5, 150, 105, 0.2);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .pagamento-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .pagamento-valor {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--success);
+            font-family: var(--font-body);
+        }
+
+        .pagamento-meta {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .pagamento-status {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--success);
+            background: rgba(5, 150, 105, 0.15);
+            padding: 4px 12px;
+            border-radius: 999px;
+        }
+
+        .codigo-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px;
+            background: var(--neutral);
+            border-radius: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .codigo-info {
+            flex: 1;
+        }
+
+        .codigo-info h5 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .codigo-info p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .codigo-valor {
+            font-family: monospace;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: 2px;
+            background: var(--white);
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px dashed var(--neutral-darker);
+        }
+
+        .qr-placeholder {
+            width: 80px;
+            height: 80px;
+            background: var(--white);
+            border: 1px solid var(--neutral-dark);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-align: center;
+        }
+
+        /* ─── RODAPÉ ─── */
+        .fatura-footer {
+            background: var(--neutral);
+            padding: 32px 24px;
+            border-top: 2px solid var(--neutral-dark);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        @media (max-width: 600px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+
+        .footer-block h5 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .footer-block p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .footer-hash {
+            text-align: center;
+            padding-top: 24px;
+            border-top: 1px solid var(--neutral-dark);
+        }
+
+        .footer-hash code {
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: var(--white);
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--neutral-dark);
+        }
+
+        /* ─── BOTÕES ─── */
+        .acoes-mobile {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            padding: 16px 24px;
+            border-top: 1px solid var(--neutral-dark);
+            display: flex;
+            gap: 12px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        @media (min-width: 801px) {
+            .acoes-mobile {
+                position: static;
+                box-shadow: none;
+                border-top: none;
+                padding: 32px 24px;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 800px) {
+            .fatura-body {
+                padding-bottom: 100px;
+            }
+        }
+
+        .btn-fatura {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            font-family: var(--font-body);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.2s;
+        }
+
+        .btn-fatura-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+        }
+
+        .btn-fatura-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-fatura-secondary {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-fatura-secondary:hover {
+            background: rgba(0, 51, 102, 0.05);
+        }
+
+        .btn-fatura-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-fatura-success:hover {
+            background: #047857;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .fatura-container {
+                margin: 0;
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            .acoes-mobile {
+                display: none !important;
+            }
+
+            .fatura-body {
+                padding-bottom: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="fatura-container">
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- CABEÇALHO -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div class="fatura-header">
+            <div class="header-content">
+                <div class="header-top">
+                    <div class="logo-area">
+                        <div class="logo-icon">AQ</div>
+                        <div class="logo-text">
+                            <h1>AquaNexus</h1>
+                            <span>Sistema de Gestão de Água</span>
+                        </div>
+                    </div>
+                    <div class="fatura-tipo-badge">Fatura Original</div>
+                </div>
+
+                <div class="header-main">
+                    <div class="fatura-numero-area">
+                        <h2>MZN 4.250,00</h2>
+                        <div class="fatura-ref">FT-2026-00042</div>
+                    </div>
+                    <div class="fatura-status-main">
+                        <div class="status-badge-large status-pendente">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                            Pendente
+                        </div>
+                        <div class="fatura-emissao">Emitida em 15/01/2026</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- CORPO -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div class="fatura-body">
+            <!-- Informações do Cliente e Empresa -->
+            <div class="info-grid">
+                <div class="info-block">
+                    <h4>Cliente</h4>
+                    <div class="info-nome">João Manuel da Silva</div>
+                    <div class="info-detalhe">
+                        <strong>Matrícula:</strong> 12345<br>
+                        <strong>NUIT:</strong> 123456789<br>
+                        <strong>Endereço:</strong> Av. Eduardo Mondlane, 456 — Maputo<br>
+                        <strong>Contacto:</strong> +258 84 123 4567
+                    </div>
+                </div>
+                <div class="info-block">
+                    <h4>AquaNexus</h4>
+                    <div class="info-nome">Empresa de Distribuição de Água</div>
+                    <div class="info-detalhe">
+                        <strong>NIF:</strong> 123456789<br>
+                        <strong>Endereço:</strong> Av. Principal, 123 — Maputo<br>
+                        <strong>Contacto:</strong> +258 21 123 456<br>
+                        <strong>Email:</strong> faturas@aquanexus.co.mz
+                    </div>
+                </div>
+            </div>
+
+            <!-- Período e Medidor -->
+            <div class="periodo-box">
+                <div class="periodo-item">
+                    <span class="periodo-label">Período de Consumo</span>
+                    <span class="periodo-valor">01/01/2026 a 31/01/2026</span>
+                </div>
+                <div class="periodo-separador"></div>
+                <div class="periodo-item">
+                    <span class="periodo-label">Medidor</span>
+                    <span class="periodo-valor">M-4521</span>
+                </div>
+                <div class="periodo-separador"></div>
+                <div class="periodo-item">
+                    <span class="periodo-label">Vencimento</span>
+                    <span class="periodo-valor">20/02/2026</span>
+                </div>
+                <div class="periodo-separador"></div>
+                <div class="periodo-item">
+                    <span class="periodo-label">Consumo</span>
+                    <span class="periodo-valor">42 m³</span>
+                </div>
+            </div>
+
+            <!-- Tabela de Consumo -->
+            <div class="consumo-section">
+                <h3 class="section-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 3v18h18" />
+                        <path d="m19 9-5 5-4-4-3 3" />
+                    </svg>
+                    Detalhamento do Consumo
+                </h3>
+                <table class="consumo-table">
+                    <thead>
+                        <tr>
+                            <th>Descrição</th>
+                            <th>Quantidade</th>
+                            <th>Preço Unit.</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Descrição">Consumo de Água</td>
+                            <td data-label="Quantidade">42 m³</td>
+                            <td data-label="Preço Unit.">MZN 45,50</td>
+                            <td data-label="Valor">MZN 1.911,00</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Descrição">Taxa de Esgoto</td>
+                            <td data-label="Quantidade">42 m³</td>
+                            <td data-label="Preço Unit.">MZN 15,20</td>
+                            <td data-label="Valor">MZN 638,40</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Descrição">Taxa de Disponibilidade</td>
+                            <td data-label="Quantidade">—</td>
+                            <td data-label="Preço Unit.">—</td>
+                            <td data-label="Valor">MZN 500,00</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Descrição">Multa por Atraso</td>
+                            <td data-label="Quantidade">—</td>
+                            <td data-label="Preço Unit.">—</td>
+                            <td data-label="Valor" style="color: var(--danger);">+ MZN 200,60</td>
+                        </tr>
+                        <tr class="consumo-total-row">
+                            <td colspan="3">Valor Total da Fatura</td>
+                            <td>MZN 4.250,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Valor Total em Destaque -->
+            <div class="valor-total-box">
+                <div class="valor-total-label">Valor Total a Pagar</div>
+                <div class="valor-total-valor">MZN 4.250,00</div>
+                <div class="valor-total-vencimento">
+                    Vencimento: 20/02/2026
+                </div>
+            </div>
+
+            <!-- Pagamentos Realizados -->
+            <div class="pagamentos-section">
+                <h3 class="section-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                    </svg>
+                    Pagamentos Realizados
+                </h3>
+                <div class="pagamento-card">
+                    <div class="pagamento-info">
+                        <div class="pagamento-valor">MZN 2.000,00</div>
+                        <div class="pagamento-meta">18/01/2026 • PIX • COMP-20260118-123456</div>
+                    </div>
+                    <div class="pagamento-status">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="3">
+                            <path d="M20 6 9 17l-5-5" />
+                        </svg>
+                        Confirmado
+                    </div>
+                </div>
+                <div class="pagamento-card">
+                    <div class="pagamento-info">
+                        <div class="pagamento-valor">MZN 1.250,00</div>
+                        <div class="pagamento-meta">25/01/2026 • Transferência Bancária • COMP-20260125-789012</div>
+                    </div>
+                    <div class="pagamento-status">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="3">
+                            <path d="M20 6 9 17l-5-5" />
+                        </svg>
+                        Confirmado
+                    </div>
+                </div>
+            </div>
+
+            <!-- Código de Referência -->
+            <div class="codigo-area">
+                <div class="codigo-info">
+                    <h5>Código de Referência para Pagamento</h5>
+                    <p>Use este código para pagamento via ATM, Internet Banking ou APP</p>
+                </div>
+                <div class="codigo-valor">FT-2026-00042</div>
+                <div class="qr-placeholder">
+                    QR<br>Code
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- RODAPÉ -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div class="fatura-footer">
+            <div class="footer-grid">
+                <div class="footer-block">
+                    <h5>Informações de Pagamento</h5>
+                    <p>
+                        <strong>Banco:</strong> Millennium BIM<br>
+                        <strong>Conta:</strong> 1234567890123<br>
+                        <strong>IBAN:</strong> MZ59 0001 0000 1234 5678 9012 3<br>
+                        <strong>Beneficiário:</strong> AquaNexus, E.P.
+                    </p>
+                </div>
+                <div class="footer-block">
+                    <h5>Observações</h5>
+                    <p>
+                        Fatura gerada automaticamente pelo sistema AquaNexus. Para mais informações, contacte o suporte
+                        ao cliente através do número +258 21 123 456 ou email suporte@aquanexus.co.mz
+                    </p>
+                </div>
+            </div>
+            <div class="footer-hash">
+                <code>Hash: a1b2c3d4e5f67890 | Processado por AquaNexus v3.0</code>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- BOTÕES DE AÇÃO -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div class="acoes-mobile">
+            <button class="btn-fatura btn-fatura-primary" onclick="alert('Pagar fatura')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect width="20" height="14" x="2" y="5" rx="2" />
+                    <line x1="2" x2="22" y1="10" y2="10" />
+                </svg>
+                Pagar Fatura
+            </button>
+            <button class="btn-fatura btn-fatura-secondary" onclick="window.print()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9V2h12v7" />
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                    <path d="M6 14h12v8H6z" />
+                </svg>
+                Imprimir
+            </button>
+        </div>
+    </div>
+
+</body>
+
+</html>

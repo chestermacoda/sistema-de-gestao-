@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Extrato de Movimentos</title>
+    <style>
+        @page {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, "DejaVu Sans", sans-serif;
+            font-size: 9pt;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- CABEÇALHO -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <table style="width:100%; background:#0066cc; border-collapse:collapse;" cellspacing="0" cellpadding="0">
+        <tr>
+            <td style="padding:3mm 2mm 3mm 3mm; vertical-align:middle; width:50px;">
+                <table style="width:42px; height:42px; border-collapse:collapse;" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td
+                            style="width:42px; height:42px; background:#fff; color:#0066cc; text-align:center; vertical-align:middle; font-size:13pt; font-weight:800;">
+                            {{ $iniciais }}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="padding:3mm 3mm 3mm 1mm; vertical-align:middle;">
+                <div
+                    style="font-size:12pt; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:0.5px;">
+                    {{ $nome_curto }}
+                </div>
+                <div style="font-size:7.5pt; color:rgba(255,255,255,0.85); margin-top:0.5mm;">
+                    Extrato de Movimentos
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- INFO CLIENTE + PERÍODO -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <table style="width:100%; border-collapse:collapse; margin:2mm 0;" cellspacing="0" cellpadding="0">
+        <tr>
+            <td style="width:48%; vertical-align:top; padding:2mm; border:1px solid #e0e0e0; background:#fafafa;">
+                <table style="width:100%; border-collapse:collapse;" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td
+                            style="font-size:6.5pt; color:#888; text-transform:uppercase; letter-spacing:0.5px; padding-bottom:1mm; border-bottom:1px solid #ddd;">
+                            Cliente
+                        </td>
+                    </tr>
+                    <tr>
+                        <td
+                            style="font-size:10pt; font-weight:700; color:#333; padding-top:1.5mm; padding-bottom:0.5mm;">
+                            {{ $cliente['nome'] }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:7pt; color:#666;">
+                            Matrícula: <span style="font-weight:600; color:#0066cc;">{{ $cliente['matricula'] }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:7pt; color:#666; padding-top:0.5mm;">
+                            Contador: <span style="font-weight:600; color:#0066cc;">{{ $cliente['contador'] }}</span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width:4%;"></td>
+            <td style="width:48%; vertical-align:top; padding:2mm; border:1px solid #e0e0e0; background:#fafafa;">
+                <table style="width:100%; border-collapse:collapse;" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td
+                            style="font-size:6.5pt; color:#888; text-transform:uppercase; letter-spacing:0.5px; padding-bottom:1mm; border-bottom:1px solid #ddd;">
+                            Período do Extrato
+                        </td>
+                    </tr>
+                    <tr>
+                        <td
+                            style="font-size:8pt; font-weight:600; color:#333; padding-top:1.5mm; padding-bottom:0.5mm;">
+                            De: {{ $periodo_inicio }} &nbsp; Até: {{ $periodo_fim }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:7pt; color:#666;">
+                            Emitido em: {{ $data_emissao }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:7pt; color:#666; padding-top:0.5mm;">
+                            Referência: <span
+                                style="font-family:'Courier New',monospace; font-weight:700; color:#0066cc;">{{
+                                $referencia_extrato }}</span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINANCEIRO -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <table style="width:100%; border-collapse:collapse; margin:2mm 0;" cellspacing="0" cellpadding="0">
+        <tr>
+            <td style="padding:0 2mm;">
+                <table style="width:100%; border-collapse:collapse;" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td
+                            style="width:25%; padding:2mm; border:2px solid #059669; background:#d1fae5; text-align:center;">
+                            <table style="width:100%; border-collapse:collapse;" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td
+                                        style="font-size:6.5pt; color:#059669; text-transform:uppercase; font-weight:700; text-align:center; padding-bottom:1mm;">
+                                        Total Pago
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:11pt; font-weight:800; color:#059669; text-align:center;">
+                                        MZN {{ number_format($total_pago, 2, ',', ' ') }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width:2%;"></td>
+                        <td
+                            style="width:25%; padding:2mm; border:2px solid #dc2626; background:#fee2e2; text-align:center;">
+                            <table style="width:100%; border-collapse:collapse;" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td
+                                        style="font-size:6.5pt; color:#dc2626; text-transform:uppercase; font-weight:700; text-align:center; padding-bottom:1mm;">
+                                        Total em Dívida
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:11pt; font-weight:800; color:#dc2626; text-align:center;">
+                                        MZN {{ number_format($total_divida, 2, ',', ' ') }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width:2%;"></td>
+                        <td
+                            style="width:25%; padding:2mm; border:2px solid #0066cc; background:#f0f7ff; text-align:center;">
+                            <table style="width:100%; border-collapse:collapse;" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td
+                                        style="font-size:6.5pt; color:#0066cc; text-transform:uppercase; font-weight:700; text-align:center; padding-bottom:1mm;">
+                                        Saldo Atual
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:11pt; font-weight:800; color:#0066cc; text-align:center;">
+                                        MZN {{ number_format($saldo_atual, 2, ',', ' ') }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width:2%;"></td>
+                        <td
+                            style="width:25%; padding:2mm; border:2px solid #d97706; background:#fef3c7; text-align:center;">
+                            <table style="width:100%; border-collapse:collapse;" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td
+                                        style="font-size:6.5pt; color:#d97706; text-transform:uppercase; font-weight:700; text-align:center; padding-bottom:1mm;">
+                                        Total Consumo
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:11pt; font-weight:800; color:#d97706; text-align:center;">
+                                        {{ number_format($total_consumo, 0, ',', ' ') }} m³
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- TABELA DE MOVIMENTOS -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <div
+        style="font-size:8pt; font-weight:700; color:#0066cc; text-transform:uppercase; letter-spacing:0.5px; border-bottom:1.5px solid #0066cc; padding-bottom:1mm; margin:3mm 2mm 0 2mm;">
+        Movimentos do Período
+    </div>
+
+    <!-- HEADER DA TABELA -->
+    <table style="width:100%; border-collapse:collapse; margin:0 2mm;" cellspacing="0" cellpadding="0">
+        <tr>
+            <td
+                style="width:12%; padding:2mm 1mm; font-size:7.5pt; font-weight:700; color:#fff; background:#0066cc; text-align:center; border-right:1px solid rgba(255,255,255,0.3);">
+                Data
+            </td>
+            <td
+                style="width:12%; padding:2mm 1mm; font-size:7.5pt; font-weight:700; color:#fff; background:#0066cc; text-align:center; border-right:1px solid rgba(255,255,255,0.3);">
+                Ref.
+            </td>
+            <td
+                style="width:26%; padding:2mm 1mm; font-size:7.5pt; font-weight:700; color:#fff; background:#0066cc; text-align:left; border-right:1px solid rgba(255,255,255,0.3);">
+                Descrição
+            </td>
+            <td
+                style="width:12%; padding:2mm 1mm; font-size:7.5pt; font-weight:700; color:#fff; background:#0066cc; text-align:center; border-right:1px solid rgba(255,255,255,0.3);">
+                Tipo
+            </td>
+            <td
+                style="width:14%; padding:2mm 1mm; font-size:7.5pt; font-weight:700; color:#fff; background:#0066cc; text-align:right; border-right:1px solid rgba(255,255,255,0.3);">
+                Débito
+            </td>
+            <td
+                style="width:14%; padding:2mm 1mm; font-size:7.5pt; font-weight:700; color:#fff; background:#0066cc; text-align:right; border-right:1px solid rgba(255,255,255,0.3);">
+                Crédito
+            </td>
+            <td
+                style="width:14%; padding:2mm 1mm; font-size:7.5pt; font-weight:700; color:#fff; background:#0066cc; text-align:right;">
+                Saldo
+            </td>
+        </tr>
+
+        <!-- LINHA DE EXEMPLO - FATURA -->
+        <tr>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; color:#333; text-align:center; border-bottom:1px solid #eee;">
+                09/07/2026
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7pt; font-family:'Courier New',monospace; color:#0066cc; text-align:center; border-bottom:1px solid #eee;">
+                FAT-001
+            </td>
+            <td style="padding:1.5mm 1mm; font-size:7.5pt; color:#333; text-align:left; border-bottom:1px solid #eee;">
+                Fatura - Consumo de Água (10 m³)
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7pt; color:#dc2626; text-align:center; border-bottom:1px solid #eee;">
+                FATURA
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; font-weight:600; color:#dc2626; text-align:right; border-bottom:1px solid #eee;">
+                1 500,00
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; font-weight:600; color:#333; text-align:right; border-bottom:1px solid #eee;">
+                --
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; font-weight:700; color:#dc2626; text-align:right; border-bottom:1px solid #eee;">
+                1 500,00
+            </td>
+        </tr>
+
+        <!-- LINHA DE EXEMPLO - PAGAMENTO -->
+        <tr>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; color:#333; text-align:center; border-bottom:1px solid #eee;">
+                10/07/2026
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7pt; font-family:'Courier New',monospace; color:#0066cc; text-align:center; border-bottom:1px solid #eee;">
+                PAG-001
+            </td>
+            <td style="padding:1.5mm 1mm; font-size:7.5pt; color:#333; text-align:left; border-bottom:1px solid #eee;">
+                Pagamento via Multibanco
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7pt; color:#059669; text-align:center; border-bottom:1px solid #eee;">
+                PAGAMENTO
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; font-weight:600; color:#333; text-align:right; border-bottom:1px solid #eee;">
+                --
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; font-weight:600; color:#059669; text-align:right; border-bottom:1px solid #eee;">
+                500,00
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; font-weight:700; color:#dc2626; text-align:right; border-bottom:1px solid #eee;">
+                1 000,00
+            </td>
+        </tr>
+
+        <!-- LINHA DE EXEMPLO - PAGAMENTO PARCIAL -->
+        <tr>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; color:#333; text-align:center; border-bottom:1px solid #eee;">
+                12/07/2026
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7pt; font-family:'Courier New',monospace; color:#0066cc; text-align:center; border-bottom:1px solid #eee;">
+                PAG-002
+            </td>
+            <td style="padding:1.5mm 1mm; font-size:7.5pt; color:#333; text-align:left; border-bottom:1px solid #eee;">
+                Pagamento Parcial - Caixa
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7pt; color:#059669; text-align:center; border-bottom:1px solid #eee;">
+                PAGAMENTO
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; font-weight:600; color:#333; text-align:right; border-bottom:1px solid #eee;">
+                --
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; font-weight:600; color:#059669; text-align:right; border-bottom:1px solid #eee;">
+                300,00
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; font-weight:700; color:#dc2626; text-align:right; border-bottom:1px solid #eee;">
+                700,00
+            </td>
+        </tr>
+
+        <!-- LINHA DE EXEMPLO - MULTA -->
+        <tr>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; color:#333; text-align:center; border-bottom:1px solid #eee;">
+                12/07/2026
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7pt; font-family:'Courier New',monospace; color:#0066cc; text-align:center; border-bottom:1px solid #eee;">
+                MUL-001
+            </td>
+            <td style="padding:1.5mm 1mm; font-size:7.5pt; color:#333; text-align:left; border-bottom:1px solid #eee;">
+                Multa por Atraso - FAT-001
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7pt; color:#d97706; text-align:center; border-bottom:1px solid #eee;">
+                MULTA
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; font-weight:600; color:#dc2626; text-align:right; border-bottom:1px solid #eee;">
+                75,00
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; font-weight:600; color:#333; text-align:right; border-bottom:1px solid #eee;">
+                --
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; font-weight:700; color:#dc2626; text-align:right; border-bottom:1px solid #eee;">
+                775,00
+            </td>
+        </tr>
+
+        <!-- LINHA DE EXEMPLO - AJUSTE/DESCONTO -->
+        <tr>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; color:#333; text-align:center; border-bottom:1px solid #eee;">
+                15/07/2026
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7pt; font-family:'Courier New',monospace; color:#0066cc; text-align:center; border-bottom:1px solid #eee;">
+                DSC-001
+            </td>
+            <td style="padding:1.5mm 1mm; font-size:7.5pt; color:#333; text-align:left; border-bottom:1px solid #eee;">
+                Desconto por Pagamento Antecipado
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7pt; color:#059669; text-align:center; border-bottom:1px solid #eee;">
+                DESCONTO
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; font-weight:600; color:#333; text-align:right; border-bottom:1px solid #eee;">
+                --
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; font-weight:600; color:#059669; text-align:right; border-bottom:1px solid #eee;">
+                50,00
+            </td>
+            <td
+                style="padding:1.5mm 1mm; font-size:7.5pt; font-weight:700; color:#dc2626; text-align:right; border-bottom:1px solid #eee;">
+                725,00
+            </td>
+        </tr>
+    </table>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- TOTAIS -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <table style="width:100%; border-collapse:collapse; margin:2mm 2mm 0 2mm;" cellspacing="0" cellpadding="0">
+        <tr>
+            <td
+                style="padding:2mm 1mm; font-size:8pt; font-weight:700; color:#333; text-align:right; border-top:2px solid #333; border-bottom:1px solid #333; width:62%;">
+                Total de Débitos:
+            </td>
+            <td
+                style="padding:2mm 1mm; font-size:8.5pt; font-weight:800; color:#dc2626; text-align:right; border-top:2px solid #333; border-bottom:1px solid #333; width:14%;">
+                MZN {{ number_format($total_debitos, 2, ',', ' ') }}
+            </td>
+            <td
+                style="padding:2mm 1mm; font-size:8.5pt; font-weight:800; color:#059669; text-align:right; border-top:2px solid #333; border-bottom:1px solid #333; width:14%;">
+                MZN {{ number_format($total_creditos, 2, ',', ' ') }}
+            </td>
+            <td
+                style="padding:2mm 1mm; font-size:8.5pt; font-weight:800; color:#0066cc; text-align:right; border-top:2px solid #333; border-bottom:1px solid #333; width:14%;">
+                MZN {{ number_format($saldo_atual, 2, ',', ' ') }}
+            </td>
+        </tr>
+    </table>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- OBSERVAÇÕES -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <table style="width:100%; border-collapse:collapse; margin:2mm 0;" cellspacing="0" cellpadding="0">
+        <tr>
+            <td style="padding:0 2mm;">
+                <table style="width:100%; border:1px solid #ff9800; border-collapse:collapse; background:#fff8e1;"
+                    cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td
+                            style="padding:2mm 2.5mm 1mm 2.5mm; font-size:7pt; font-weight:700; color:#e65100; text-transform:uppercase; letter-spacing:0.5px; border:none;">
+                            Informações Importantes
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0 2.5mm 2mm 2.5mm; font-size:7pt; color:#666; line-height:1.5; border:none;">
+                            Este extrato reflete os movimentos registados no sistema até a data de emissão.
+                            Em caso de discrepância, contacte o suporte em até 30 dias.
+                            Os valores apresentados estão em Meticais (MZN).
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- RODAPÉ -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <table
+        style="width:100%; background:#f8f8f8; border-top:2px solid #0066cc; border-collapse:collapse; margin-top:2mm;"
+        cellspacing="0" cellpadding="0">
+        <tr>
+            <td style="padding:2mm 3mm; text-align:center; vertical-align:middle;">
+                <div style="font-size:9pt; font-weight:700; color:#0066cc; margin-bottom:1mm;">
+                    {{ $nome_curto }}
+                </div>
+                <div style="font-size:6.5pt; color:#666; margin-bottom:1.5mm;">
+                    <strong style="color:#333;">Atendido por: {{ $usuario }}</strong> |
+                    Emitido em {{ $data_emissao }} às {{ $hora_emissao }}
+                </div>
+                <div
+                    style="font-family:'Courier New',monospace; font-size:6pt; color:#888; background:#fff; padding:1mm 2mm; border:1px solid #ddd; display:inline-block;">
+                    Ref: {{ $referencia_extrato }} | Página 1 de 1
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</body>
+
+</html>
