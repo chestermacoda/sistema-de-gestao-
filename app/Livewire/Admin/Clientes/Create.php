@@ -346,6 +346,7 @@ class Create extends Component
                 'observacoes' => $this->observacoes,
 
                 'status' => 'Ativo',
+                                        'password' => Hash::make('123456'),
             ]);
 
             /**
