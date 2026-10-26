@@ -132,8 +132,8 @@ class ShowFaturas extends Component
             } else {
                 // dd($this->mesFiltro);
                 $q->where('mes_referencia', 'like', $this->mesFiltro . '%');
-
                 // $q->whereMonth('mes_referencia', $this->mesFiltro);
+
             }
         });
 

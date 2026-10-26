@@ -56,9 +56,9 @@
                      </svg>
                  </div>
                  <div class="stat-content">
-                     <div class="stat-value">1.847</div>
+                     <div class="stat-value">{{ number_format($states['transacoes'], 2) }}</div>
                      <div class="stat-label">Transações</div>
-                     <div class="stat-change positive">+15% vs mês anterior</div>
+                     <div class="stat-change positive">{{ $states['TransacoesPercentual'] }}% vs mês anterior</div>
                  </div>
              </div>
              <div class="stat-card">

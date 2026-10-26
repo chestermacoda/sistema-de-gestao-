@@ -42,6 +42,6 @@ class Index extends Component
 
         $percentual = $this->total > 0 ? round(($this->concluidos / $this->total) * 100) : 0;
 
-        return view('Livewire.admin.Mobile.Leiturista.Index');
+        return view('Livewire.Admin.Mobile.Leiturista.Index');
     }
 }

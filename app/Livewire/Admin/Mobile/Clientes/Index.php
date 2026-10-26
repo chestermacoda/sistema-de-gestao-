@@ -91,38 +91,39 @@ class Index extends Component
             : 0;
 
         // Período da última leitura ou mês atual
-        $periodoInicio = $ultimaLeitura
+        $periodoInicio = $ultimaLeitura && $ultimaLeitura->periodo_inicio
             ? Carbon::parse($ultimaLeitura->periodo_inicio)->startOfMonth()->format('d/m/Y')
             : $inicioMes->format('d/m/Y');
-        $periodoFim = $ultimaLeitura
+        $periodoFim = $ultimaLeitura && $ultimaLeitura->periodo_fim
             ? Carbon::parse($ultimaLeitura->periodo_fim)->format('d/m/Y')
             : $hoje->format('d/m/Y');
 
-
-
-        $dataVencimento = Carbon::createFromFormat('d/m/Y', trim($periodoFim))->startOfDay();
+        // ✅ Corrigido: usa Carbon::parse direto (mais seguro que createFromFormat)
+        $dataVencimento = $ultimaLeitura && $ultimaLeitura->periodo_fim
+            ? Carbon::parse($ultimaLeitura->periodo_fim)->startOfDay()
+            : $fimMes->copy()->startOfDay();
 
         $dias = Carbon::today()->diffInDays($dataVencimento, false);
 
-        $data = $this->getAcoes($ultimaLeitura->status);
-
+        // ✅ Corrigido: valor padrão quando não existe fatura
+        $data = $this->getAcoes($ultimaLeitura->status ?? 'Pendente');
 
         $this->consumoAtual = [
-            'valorRestante' => $ultimaLeitura->valor_total - $ultimaLeitura->saldo_atual,
-            'status' => $ultimaLeitura->status,
-
+            // ✅ Corrigido: ternário para quando não há fatura
+            'valorRestante' => $ultimaLeitura
+                ? (float) ($ultimaLeitura->valor_total - $ultimaLeitura->saldo_atual)
+                : 0,
+            'status' => $ultimaLeitura->status ?? 'Sem faturas',
             'badge' => $data[0],
-
             'diasRestantes' => $dias,
-
-            'valor_total' => $ultimaLeitura->valor_total,
+            'valor_total' => $ultimaLeitura ? (float) $ultimaLeitura->valor_total : 0,
             'mes_ano' => $hoje->translatedFormat('F/Y'),
             'consumo_m3' => (float) $consumoMes,
             'periodo_inicio' => $periodoInicio,
             'periodo_fim' => $periodoFim,
             'media_mensal' => (float) $mediaMensal,
             'percentual_media' => (float) $percentualMedia,
-            'ultima_leitura' => $ultimaLeitura ? [
+            'ultima_leitura' => $ultimaLeitura && isset($ultimaLeitura->data_leitura) ? [
                 'data' => Carbon::parse($ultimaLeitura->data_leitura)->format('d/m/Y'),
                 'valor' => (float) $ultimaLeitura->consumo,
             ] : null,
@@ -130,11 +131,8 @@ class Index extends Component
         ];
     }
 
-
     public function getAcoes($item)
     {
-
-
         return match ($item) {
             'Pendente' => ['badge-warning'],
             'Parcial' => ['badge-warning'],
@@ -340,6 +338,6 @@ class Index extends Component
     }
     public function render()
     {
-        return view('Livewire.admin.Mobile.Clientes.Index');
+        return view('Livewire.Admin.Mobile.Clientes.Index');
     }
 }

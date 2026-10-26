@@ -216,6 +216,6 @@ class Configuracoes extends Component
     }
     public function render()
     {
-        return view('livewire.admin.mobile.leiturista.configuracoes');
+        return view('Livewire.Admin.Mobile.Leiturista.Configuracoes');
     }
 }

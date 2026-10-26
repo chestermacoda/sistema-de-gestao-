@@ -82,7 +82,7 @@ class Create extends Component
 
     public function mount()
     {
-        $this->mes_referencia = now()->format('Y-m');
+        $this->mes_referencia = now()->format('Y-m-d');
 
         $this->data_leitura = now()->format('Y-m-d');
 

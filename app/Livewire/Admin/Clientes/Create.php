@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Clientes;
 
 use App\Models\Cliente;
 use App\Models\ClienteMedidor;
+use App\Models\zona_distribuicao;
 use App\Models\Medidores;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -50,9 +51,9 @@ class Create extends Component
 
     public $ponto_referencia;
 
-    public $latitude;
+    public $latitude =1;
 
-    public $longitude;
+    public $longitude = 1;
 
     /**
      * =========================
@@ -66,7 +67,7 @@ class Create extends Component
 
     public $tipo_ligacao;
 
-    public $diametro_ramal;
+    public $diametro_ramal = '';
 
     public $data_solicitacao;
 
@@ -94,7 +95,7 @@ class Create extends Component
 
     public $diametro;
 
-    public $tipo_hidrometro;
+    public $tipo_hidrometro = 'Eletromagnético';
 
     public $classe_metrologica;
 
@@ -108,11 +109,11 @@ class Create extends Component
 
     public $data_instalacao;
 
-    public $local_instalacao;
+    public $local_instalacao = 'Interior do Imóvel';
 
     public $condicao_hidrometro = 'Novo';
 
-    public $numero_lacre;
+    public $numero_lacre = '';
 
     public $vistoria_realizada = true;
 
@@ -412,8 +413,9 @@ class Create extends Component
         $marcas = Medidores::select('marca')->where('status_inicial', 'estoque')
             ->distinct()
             ->pluck('marca');
-        return view('Livewire.admin.Clientes.Create', [
-            'marcas' => $marcas
+        return view('Livewire.Admin.Clientes.Create', [
+            'marcas' => $marcas,
+               'zona'=>zona_distribuicao::all(),
         ]);
     }
 }

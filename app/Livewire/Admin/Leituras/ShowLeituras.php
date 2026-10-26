@@ -70,6 +70,10 @@ class ShowLeituras extends Component
     {
         $mesReferencia = $this->mesFilter;
 
+        $fimDoMes = Carbon::createFromFormat('Y-m', $mesReferencia)
+        ->endOfMonth()
+        ->toDateString();
+
         // 1. Busca todas as leituras já registradas no mês
         $leiturasQuery = Leituras::query()
             ->with(['medidor.cliente', 'leiturista'])
@@ -96,19 +100,48 @@ class ShowLeituras extends Component
         $leituras = $leiturasQuery->get();
 
         // 2. Busca medidores instalados que NÃO têm leitura no mês (PENDENTES)
-        $medidoresPendentes = Medidores::where('status_inicial', 'instalado')
+        // $medidoresPendentes = Medidores::where('status_inicial', 'instalado')
+        //     ->whereNotNull('cliente_id')
+        //     ->whereDoesntHave('leituras', function ($q) use ($mesReferencia) {
+        //         $q->where('mes_referencia', 'like', '%' . $mesReferencia . '%');
+        //     })
+        //     ->with(['cliente', 'ultimaLeitura'])
+        //     ->when($this->search, function ($q) {
+        //         $q->where(function ($sq) {
+        //             $sq->where('numero_hidrometro', 'like', '%' . $this->search . '%')
+        //                 ->orWhereHas('cliente', function ($cq) {
+        //                     $cq->where('nome_completo', 'like', '%' . $this->search . '%')
+        //                         ->orWhere('numero_matricula', 'like', '%' . $this->search . '%');
+        //                 });
+        //         });
+        //     })
+        //     ->get();
+
+        $medidoresPendentes = Medidores::query()
+            ->where('status_inicial', 'instalado')
             ->whereNotNull('cliente_id')
+            ->whereDate('created_at', '<=', $fimDoMes)
+            ->whereHas('cliente', function ($q) use ($fimDoMes) {
+                $q->whereDate('created_at', '<=', $fimDoMes);
+            })
             ->whereDoesntHave('leituras', function ($q) use ($mesReferencia) {
-                $q->where('mes_referencia', $mesReferencia);
+                $q->where('mes_referencia', 'like', '%' . $mesReferencia . '%');
             })
             ->with(['cliente', 'ultimaLeitura'])
             ->when($this->search, function ($q) {
                 $q->where(function ($sq) {
-                    $sq->where('numero_hidrometro', 'like', '%' . $this->search . '%')
-                        ->orWhereHas('cliente', function ($cq) {
-                            $cq->where('nome_completo', 'like', '%' . $this->search . '%')
-                                ->orWhere('numero_matricula', 'like', '%' . $this->search . '%');
-                        });
+                    $sq->where(
+                        'numero_hidrometro',
+                        'like',
+                        '%' . $this->search . '%'
+                    )->orWhereHas('cliente', function ($cq) {
+                        $cq->where('nome_completo', 'like', '%' . $this->search . '%')
+                            ->orWhere(
+                                'numero_matricula',
+                                'like',
+                                '%' . $this->search . '%'
+                            );
+                    });
                 });
             })
             ->get();

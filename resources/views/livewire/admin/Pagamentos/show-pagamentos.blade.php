@@ -22,12 +22,10 @@
             </select>
             <select class="form-select" style="width: auto; min-width: 160px;" wire:model.live="metodoFiltro">
                 <option value="todos">Todos os Métodos</option>
-                <option value="PIX">PIX</option>
-                <option value="Boleto">Boleto</option>
-                <option value="Cartão de Crédito">Cartão de Crédito</option>
-                <option value="Cartão de Débito">Cartão de Débito</option>
                 <option value="Dinheiro">Dinheiro</option>
-                <option value="Débito em Conta">Débito em Conta</option>
+                <option value="M-pesa">M-pesa</option>
+                <option value="Emola">Emola</option>
+                <option value="Cartão de Débito">Cartão de Débito</option>
             </select>
             <select class="form-select" style="width: auto; min-width: 160px;" wire:model.live="mesFiltro">
                 <option value="atual">Mês Atual</option>

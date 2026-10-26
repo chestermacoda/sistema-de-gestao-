@@ -47,80 +47,8 @@
               <!-- Coluna Direita -->
               <div class="cfg-col">
                   <!-- Sistema -->
-                  <div class="cfg-card">
-                      <div class="cfg-card-header">
-                          <div class="cfg-card-icon cfg-icon-blue">
-                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                  stroke-width="2">
-                                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-                                  <line x1="8" x2="16" y1="21" y2="21" />
-                                  <line x1="12" x2="12" y1="17" y2="21" />
-                              </svg>
-                          </div>
-                          <div>
-                              <h3 class="cfg-card-title">Sistema</h3>
-                              <p class="cfg-card-desc">Comportamento e aparência</p>
-                          </div>
-                      </div>
-                      <div class="cfg-card-body">
-                          <div class="cfg-form-group">
-                              <label class="cfg-label">Idioma Padrão</label>
-                              <select class="cfg-select">
-                                  <option value="pt-BR" selected>Português (Brasil)</option>
-                                  <option value="en-US">English (US)</option>
-                                  <option value="es-ES">Español</option>
-                              </select>
-                          </div>
-                          <div class="cfg-form-group">
-                              <label class="cfg-label">Fuso Horário</label>
-                              <select class="cfg-select">
-                                  <option value="America/Sao_Paulo" selected>America/São Paulo (GMT-3)</option>
-                                  <option value="America/Recife">America/Recife (GMT-3)</option>
-                                  <option value="America/Manaus">America/Manaus (GMT-4)</option>
-                                  <option value="America/Rio_Branco">America/Rio Branco (GMT-5)</option>
-                              </select>
-                          </div>
-                          <div class="cfg-form-row">
-                              <div class="cfg-form-group">
-                                  <label class="cfg-label">Formato de Data</label>
-                                  <select class="cfg-select">
-                                      <option value="DD/MM/YYYY" selected>DD/MM/YYYY</option>
-                                      <option value="MM/DD/YYYY">MM/DD/YYYY</option>
-                                      <option value="YYYY-MM-DD">YYYY-MM-DD</option>
-                                  </select>
-                              </div>
-                              <div class="cfg-form-group">
-                                  <label class="cfg-label">Formato de Hora</label>
-                                  <select class="cfg-select">
-                                      <option value="24h" selected>24 horas</option>
-                                      <option value="12h">12 horas (AM/PM)</option>
-                                  </select>
-                              </div>
-                          </div>
-                          <div class="cfg-form-group">
-                              <label class="cfg-label">Tema</label>
-                              <div class="cfg-theme-selector">
-                                  <div class="cfg-theme-option cfg-theme-active" onclick="selectTheme(this, 'light')">
-                                      <div class="cfg-theme-preview cfg-theme-light"></div>
-                                      <span>Claro</span>
-                                  </div>
-                                  <div class="cfg-theme-option" onclick="selectTheme(this, 'dark')">
-                                      <div class="cfg-theme-preview cfg-theme-dark"></div>
-                                      <span>Escuro</span>
-                                  </div>
-                                  <div class="cfg-theme-option" onclick="selectTheme(this, 'auto')">
-                                      <div class="cfg-theme-preview cfg-theme-auto"></div>
-                                      <span>Auto</span>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="cfg-form-group">
-                              <label class="cfg-label">Sessão Expira em (minutos)</label>
-                              <input type="number" class="cfg-input" value="30" min="5" max="120">
-                              <span class="cfg-hint">Tempo de inatividade antes do logout automático</span>
-                          </div>
-                      </div>
-                  </div>
+                 
+                   @include('admin.Configuracoes.zonas_distribuicao')
 
                   <!-- Integrações -->
                   <div class="cfg-card">
@@ -417,6 +345,81 @@
                           <path d="M20 6 9 17l-5-5" />
                       </svg>
                       Salvar Tarifa
+                  </button>
+              </div>
+          </form>
+      </div>
+
+
+      <!-- Modal: Editar Tarifa -->
+      <div class="modal-overlay" id="modal-zona_distribuicao" wire:ignore.self>
+          <form class="modal" wire:submit.prevent='savezona' >
+              <div class="modal-header">
+                  <h3 class="modal-title">
+                       @if($modalTipo)
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" style="vertical-align: middle; margin-right: 8px;">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                        </svg>
+                 
+                        Editar Zona
+                      @else
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12h14" />
+                            <path d="M12 5v14" />
+                        </svg>
+                        Adicionar Zona
+                      @endif
+                  </h3>
+                  <button class="modal-close" onclick="closeModal('modal-zona_distribuicao')">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2">
+                          <path d="M18 6 6 18" />
+                          <path d="m6 6 12 12" />
+                      </svg>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <div class="cfg-form-group">
+                      <label class="cfg-label">Nome da Zona</label>
+                      <input type="text" class="cfg-input"   
+                          wire:model='nomezona'>
+                      @error('nomezona')
+                          <small style="color: var(--danger)">{{ $message }}</small>
+                      @enderror
+                  </div>
+                  
+                      <div class="cfg-form-group">
+                          <label class="cfg-label">Descrição da Zona</label>
+                          <input type="text" class="cfg-input"  wire:model='descricaozona'>
+                          @error('descricaozona')
+                              <small style="color: var(--danger)">{{ $message }}</small>
+                          @enderror
+                      </div>
+               
+                      <div class="cfg-form-group">
+                          <label class="cfg-label">Status</label>
+                           <select class="cfg-input" wire:model='statuszona'>
+                                <option value="">Escolher status</option>
+                                <option value="activo">Activo</option>
+                                <option value="inativo">Inativo</option>
+                           </select>
+                          @error('statuszona')
+                              <small style="color: var(--danger)">{{ $message }}</small>
+                          @enderror
+                      </div>
+                 
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-outline" onclick="closeModal('modal-zona_distribuicao')">Cancelar</button>
+                  <button class="btn btn-primary" type="submit">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2">
+                          <path d="M20 6 9 17l-5-5" />
+                      </svg>
+                      Salvar
                   </button>
               </div>
           </form>

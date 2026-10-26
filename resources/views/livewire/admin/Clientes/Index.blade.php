@@ -63,11 +63,12 @@
                     <!-- Filtro Zona -->
                     <select class="form-select" wire:model.live="zonaFilter" style="width: auto; min-width: 160px;">
                         <option value="">Todas as Zonas</option>
-                        <option value="Zona Norte">Zona Norte</option>
-                        <option value="Zona Sul">Zona Sul</option>
-                        <option value="Zona Leste">Zona Leste</option>
-                        <option value="Zona Oeste">Zona Oeste</option>
-                        <option value="Centro">Centro</option>
+                        @if($zona)
+                            @foreach($zona as $z)
+                                <option value="{{ $z->nome }}">{{$z->nome}}</option>
+                            @endforeach
+                        @endif
+                 
                     </select>
 
                     <!-- Filtro Status Leitura (NOVO) -->

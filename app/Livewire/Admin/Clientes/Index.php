@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Clientes;
 
 use App\Models\Cliente;
 use App\Models\ClienteMedidor;
+use App\Models\zona_distribuicao;
 use App\Models\Leituras;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -190,7 +191,8 @@ class Index extends Component
 
     public function render()
     {
-        return view('Livewire.admin.Clientes.Index', [
+        return view('Livewire.Admin.Clientes.Index', [
+            'zona'=>zona_distribuicao::all(),
             'Cliente' => Cliente::all(),
             'ClienteMedidor' => ClienteMedidor::all(),
         ]);

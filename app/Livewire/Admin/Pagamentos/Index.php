@@ -21,16 +21,41 @@ class Index extends Component
 
         $date = date('Y-m');
 
+        $dateAnterior = date('Y-m', strtotime('-1 month'));
+        // Helper: só calcula se tiver valor anterior. Se não, retorna null
+        $calcPercentual = function ($atual, $anterior) {
+            if ($anterior == 0 || $anterior == null) {
+                return null; // Sem base de comparação
+            }
+            return (($atual - $anterior) / $anterior) * 100;
+        };
 
+        // Mês Atual
+        $transacoesAtual = pagamentos::where('data_pagamento', 'like', '%' . $date . '%')->count();
+        $transacoesAnterior = pagamentos::where('data_pagamento', 'like', '%' . $dateAnterior . '%')->count();
+
+        // $receitaAtual = pagamentos::where('data_pagamento', 'like', '%' . $dateAtual . '%')->sum('valor_pago');
+        // Mês Anterior
+        $receitaAnterior = pagamentos::where('data_pagamento', 'like', '%' . $dateAnterior . '%')->sum('valor_pago');
+
+        // Calcula
+        $percentTransacoes = $calcPercentual($transacoesAtual, $transacoesAnterior);
+        // $percentReceita = $calcPercentual($receitaAtual, $receitaAnterior);
         return [
             'ReceitaTotal' =>  pagamentos::where('data_pagamento', 'like', '%' . $date . '%')->get()->sum('valor_pago'),
 
-            'Pendente' =>  Faturas::whereIn('status', ['Pendente', 'Vencida', 'Parcial'])->where('saldo_atual', '>', 0)->get()->sum('saldo_atual'),
+            'Pendente' =>  Faturas::where('mes_referencia', 'like', '%' . $date . '%')->whereIn('status', ['Pendente', 'Vencida', 'Parcial'])->where('saldo_atual', '>', 0)->get()->sum('saldo_atual'),
 
-            'Count_Pendente' =>  Faturas::whereIn('status', ['Pendente', 'Vencida', 'Parcial'])->where('saldo_atual', '>', 0)->get()->count(),
+            'Count_Pendente' =>  Faturas::where('mes_referencia', 'like', '%' . $date . '%')->whereIn('status', ['Pendente', 'Vencida', 'Parcial'])->where('saldo_atual', '>', 0)->get()->count(),
 
             'Estornos' =>  pagamentos::where('data_pagamento', 'like', '%' . $date . '%')->where('status', 'Estornado')->get()->sum('valor_pago'),
             'Count_estorno' =>  pagamentos::where('data_pagamento', 'like', '%' . $date . '%')->where('status', 'Estornado')->get()->count(),
+
+            'transacoes' =>  pagamentos::where('data_pagamento', 'like', '%' . $date . '%')->count(),
+            'TransacoesPercentual' => $percentTransacoes !== null ? round($percentTransacoes, 2) : null,
+
+
+
         ];
     }
 

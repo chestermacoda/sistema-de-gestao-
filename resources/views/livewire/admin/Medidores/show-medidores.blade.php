@@ -25,7 +25,7 @@
             </select>
 
             <!-- Filtro Diâmetro -->
-            <select class="form-select" wire:model.live="diametroFilter" style="width: auto; min-width: 160px;">
+            {{-- <select class="form-select" wire:model.live="diametroFilter" style="width: auto; min-width: 160px;">
                 <option value="">Todos os Diâmetros</option>
                 <option value="15mm">15mm</option>
                 <option value="20mm">20mm</option>
@@ -35,17 +35,17 @@
                 <option value="50mm">50mm</option>
                 <option value="75mm">75mm</option>
                 <option value="100mm">100mm</option>
-            </select>
+            </select> --}}
 
             <!-- Filtro Marca -->
-            <select class="form-select" wire:model.live="marcaFilter" style="width: auto; min-width: 160px;">
+            {{-- <select class="form-select" wire:model.live="marcaFilter" style="width: auto; min-width: 160px;">
                 <option value="">Todas as Marcas</option>
                 <option value="Actaris">Actaris / Itron</option>
                 <option value="Bayard">Bayard</option>
                 <option value="Coprel">Coprel</option>
                 <option value="Elster">Elster</option>
                 <option value="Sensus">Sensus</option>
-            </select>
+            </select> --}}
 
             <!-- Exportar -->
             <button class="btn btn-outline btn-sm">
@@ -61,7 +61,7 @@
     </div>
 
     <!-- View Toggle + Contador -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-lg);">
+    {{-- <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-lg);">
         <div
             style="display: flex; gap: var(--space-xs); background: var(--neutral); padding: 4px; border-radius: var(--radius-md);">
 
@@ -97,7 +97,7 @@
             Mostrando {{ $this->medidores->firstItem() ?? 0 }}-{{ $this->medidores->lastItem() ?? 0 }}
             de {{ $this->medidores->total() }} medidores
         </span>
-    </div>
+    </div> --}}
 
     <!-- ==================== VIEW: CARDS ==================== -->
     @if ($viewMode === 'cards')
@@ -157,12 +157,12 @@
                         @endif
 
                         <!-- Calibração -->
-                        <div class="medidor-info-row">
+                        {{-- <div class="medidor-info-row">
                             <span class="medidor-info-label">Calibração</span>
                             <span class="medidor-info-value" style="color: var(--{{ $calibracao['class'] }});">
                                 {{ $calibracao['text'] }}
                             </span>
-                        </div>
+                        </div> --}}
 
                         <div class="medidor-leitura" style="{{ $leitura['style'] }}">
                             <div class="medidor-leitura-valor" style="{{ $leitura['valorColor'] }}">
@@ -190,7 +190,7 @@
                             {{-- onclick="openModal('modal-leitura-medidor')"  --}}
                             @if (in_array('leitura', $acoes))
                                 <button class="btn btn-sm btn-ghost"
-                                    wire:click="$dispatch('leitura-OpenAction', { idMedidor: {{ $medidor->id }},idCliente: {{ $cliente['cliente_id'] }} })"
+                                    wire:click="$dispatch('leitura-OpenAction', { idMedidor: {{ $medidor->id }},idCliente: {{ $cliente['cliente_id'] ?? null }} })"
                                     title="Registrar Leitura">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="2">
@@ -278,7 +278,7 @@
 
     <!-- ==================== VIEW: LISTA ==================== -->
     @if ($viewMode === 'lista')
-        <div class="card" style="margin: 0; margin-bottom: var(--space-xl);">
+        {{-- <div class="card" style="margin: 0; margin-bottom: var(--space-xl);">
             <div class="table-container">
                 <table id="tabelaMedidores" style="width: 100%; border-collapse: collapse;">
                     <thead>
@@ -452,10 +452,9 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div> --}}
     @endif
 
     <!-- Paginação -->
-
     @include('admin.components.pagination', ['paginator' => $this->medidores])
 </div>

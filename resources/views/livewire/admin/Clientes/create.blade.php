@@ -125,12 +125,11 @@
                         <label class="form-label">Zona de Distribuição *</label>
                         <select class="form-select" wire:model="zona_distribuicao" required>
                             <option>Selecione...</option>
-                            <option value="Zona Norte">Zona Norte</option>
-                            <option value="Zona Sul">Zona Sul</option>
-                            <option value="Zona Leste">Zona Leste</option>
-                            <option value="Zona Oeste">Zona Oeste</option>
-                            <option value="Centro">Centro</option>
-                            <option value="Zona Rural">Zona Rural</option>
+                          @if($zona)
+                            @foreach($zona as $z)
+                                <option value="{{ $z->nome }}">{{$z->nome}}</option>
+                            @endforeach
+                        @endif
                         </select>
                     </div>
                 </div>
@@ -139,15 +138,7 @@
                     <input type="text" class="form-input" wire:model="ponto_referencia"
                         placeholder="Próximo ao mercado, igreja, etc.">
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Coordenadas GPS (Lat, Long)</label>
-                    <div class="grid-2">
-                        <input type="text" class="form-input" wire:model="latitude"
-                            placeholder="Latitude: -23.5505">
-                        <input type="text" class="form-input" wire:model="longitude"
-                            placeholder="Longitude: -46.6333">
-                    </div>
-                </div>
+                 
             </div>
 
             <!-- Aba: Dados da Ligação -->
@@ -180,7 +171,7 @@
                             <option value="Regularização">Regularização</option>
                         </select>
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label class="form-label">Diâmetro do Ramal (mm) *</label>
                         <select class="form-select" wire:model="diametro_ramal" required>
                             <option>Selecione...</option>
@@ -193,7 +184,7 @@
                             <option value="75mm">75mm (3")</option>
                             <option value="100mm">100mm (4")</option>
                         </select>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="grid-2">
                     <div class="form-group">
@@ -254,8 +245,8 @@
                         </select>
                     </div>
                 </div>
-                <div class="grid-2">
-                    <div class="form-group">
+                {{--<div class="grid-2">
+                     <div class="form-group">
                         <label class="form-label">Diâmetro do Hidrômetro (mm) *</label>
                         <select class="form-select" wire:model='diametro' required>
                             <option value="">Selecione...</option>
@@ -268,7 +259,7 @@
                             <option value="75mm">75mm</option>
                             <option value="100mm">100mm</option>
                         </select>
-                    </div>
+                    </div> 
                     <div class="form-group">
                         <label class="form-label">Tipo de Hidrômetro</label>
                         <select class="form-select" wire:model='tipo_hidrometro'>
@@ -280,8 +271,8 @@
                             <option value="Eletromagnético">Eletromagnético</option>
                             <option value="Smart / Inteligente">Smart / Inteligente</option>
                         </select>
-                    </div>
-                </div>
+                    </div> 
+                </div>--}}
                 <div class="grid-2">
                     <div class="form-group">
                         <label class="form-label">Leitura Inicial (m³) *</label>
@@ -293,7 +284,7 @@
                         <input type="date" wire:model='data_instalacao' class="form-input" required>
                     </div>
                 </div>
-                <div class="grid-2">
+                {{-- <div class="grid-2">
                     <div class="form-group">
                         <label class="form-label">Local de Instalação</label>
                         <select class="form-select" wire:model='local_instalacao'>
@@ -312,12 +303,12 @@
                             <option value="Em Manutenção">Em Manutenção</option>
                         </select>
                     </div>
-                </div>
+                </div> 
                 <div class="form-group">
                     <label class="form-label">Número do Lacre / Selo</label>
                     <input type="text" wire:model='numero_lacre' class="form-input"
                         placeholder="Número do lacre de segurança">
-                </div>
+                </div>--}}
                 <div
                     style="background: var(--neutral); border-radius: var(--radius-md); padding: var(--space-md); margin-top: var(--space-md);">
                     <label
@@ -332,15 +323,7 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-outline" onclick="closeModal('modal-novo-cliente')">Cancelar</button>
-            <button type="submit" class="btn btn-secondary" onclick="salvarRascunho()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2" style="margin-right: 6px;">
-                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                    <polyline points="17 21 17 13 7 13 7 21" />
-                    <polyline points="7 3 7 8 15 8" />
-                </svg>
-                Salvar Rascunho
-            </button>
+             
             <button type="submit" class="btn btn-primary">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                     stroke-width="2" style="margin-right: 6px;">

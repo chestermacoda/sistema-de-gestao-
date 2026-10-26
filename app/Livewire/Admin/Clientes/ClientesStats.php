@@ -110,6 +110,6 @@ class ClientesStats extends Component
 
     public function render()
     {
-        return view('livewire.admin.clientes.clientes-stats');
+        return view('Livewire.Admin.Clientes.Clientes-stats');
     }
 }

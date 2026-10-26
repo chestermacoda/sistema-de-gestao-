@@ -40,7 +40,7 @@
     </div>
 
     <!-- Em Manutenção -->
-    <div class="stat-card">
+    {{-- <div class="stat-card">
         <div class="stat-icon warning">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2">
@@ -56,7 +56,7 @@
                 {{ $this->percentualManutencao }}% do total
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Em Estoque -->
     <div class="stat-card">
@@ -79,7 +79,7 @@
     </div>
 
     <!-- Descartados/Danificados -->
-    <div class="stat-card">
+    {{-- <div class="stat-card">
         <div class="stat-icon danger">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2">
@@ -95,10 +95,10 @@
                 Fora de uso
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Calibração Vencendo -->
-    <div class="stat-card">
+    {{-- <div class="stat-card">
         <div class="stat-icon info">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2">
@@ -117,7 +117,7 @@
                 @endif
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Descartados/Danificados -->
     <div class="stat-card">

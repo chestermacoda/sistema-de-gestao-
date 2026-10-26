@@ -25,6 +25,7 @@ class Importarleituras extends Component
     use WithFileUploads;
 
     public $arquivo;
+    public $leituristas;
     public string $mes_referencia = '';
     public int $user_id;
     public bool $validar_anomalias = true;
@@ -63,8 +64,9 @@ class Importarleituras extends Component
 
     public function mount()
     {
-        $this->mes_referencia = now()->format('Y-m');
+        $this->mes_referencia = now()->format('Y-m-d');
         $this->user_id = Auth::id();
+        $this->leituristas = User::role('Leiturista')->get();
     }
 
     /**
@@ -147,6 +149,7 @@ class Importarleituras extends Component
     private function processarLinha(array $linha, int $numeroLinha): void
     {
         try {
+
             // Valida campos obrigatórios
             if (empty($linha['numero_hidrometro']) || empty($linha['leitura_atual'])) {
                 $this->erros++;
@@ -158,10 +161,12 @@ class Importarleituras extends Component
                 return;
             }
 
+
             // Busca medidor pelo número do hidrômetro
             $medidor = Medidores::where('numero_hidrometro', trim($linha['numero_hidrometro']))
                 ->where('status_inicial', 'instalado')
                 ->first();
+
 
             if (!$medidor) {
                 $this->erros++;
@@ -176,7 +181,8 @@ class Importarleituras extends Component
             // Verifica duplicado no mês
             if ($this->ignorar_duplicados) {
                 $existe = Leituras::where('medidores_id', $medidor->id)
-                    ->where('mes_referencia', $this->mes_referencia)
+                    // ->where('mes_referencia', $this->mes_referencia)
+                    ->where('mes_referencia', 'like', '%' . $this->mes_referencia . '%')
                     ->exists();
 
                 if ($existe) {
@@ -196,19 +202,21 @@ class Importarleituras extends Component
                 ->first();
 
             $leituraAnterior = $ultimaLeitura?->leitura_atual ?? $medidor->cliente?->instalacaoAtiva?->leitura_inicial ?? 0;
+            // dd($leituraAnterior);
 
+            // dd($this->mes_referencia. date('-d'));
             // Prepara dados
             $dados = [
                 'cliente_id'       => $medidor->cliente_id,
                 'medidores_id'     => $medidor->id,
                 'user_id'          => $this->user_id,
-                'mes_referencia'   => $this->mes_referencia,
+                'mes_referencia'   => $this->mes_referencia . date('-d'),
                 'data_leitura'     => $linha['data_leitura'] ?? now()->format('Y-m-d'),
                 'hora_leitura'     => $linha['hora_leitura'] ?? now()->format('H:i:s'),
                 'leitura_anterior' => (float) $leituraAnterior,
                 'leitura_atual'    => (float) $linha['leitura_atual'],
                 'confirmada_local' => true,
-                'origem'           => 'importacao_excel',
+                'origem'           => 'importacao',
             ];
 
             // Cria pelo Service (que calcula consumo, média e detecta anomalias)
@@ -217,17 +225,20 @@ class Importarleituras extends Component
             $this->sucessos++;
 
             // Verifica se gerou anomalia
-            if ($leitura->tem_anomalia) {
-                $this->anomalias++;
-                $this->log_anomalias[] = [
-                    'linha' => $numeroLinha,
-                    'hidrometro' => $linha['numero_hidrometro'],
-                    'cliente' => $medidor->cliente?->nome_completo ?? 'N/A',
-                    'consumo' => $leitura->consumo,
-                    'tipo' => $leitura->tipo_anomalia,
-                    'descricao' => $leitura->descricao_anomalia,
-                ];
-            }
+            // if ($leitura->tem_anomalia) {
+            //     $this->anomalias++;
+            //     $this->log_anomalias[] = [
+            //         'linha' => $numeroLinha,
+            //         'hidrometro' => $linha['numero_hidrometro'],
+            //         'cliente' => $medidor->cliente?->nome_completo ?? 'N/A',
+            //         'consumo' => $leitura->consumo,
+            //         'tipo' => $leitura->tipo_anomalia,
+            //         'descricao' => $leitura->descricao_anomalia,
+            //     ];
+            // }
+
+
+
         } catch (\Exception $e) {
             $this->erros++;
             $this->log_erros[] = [

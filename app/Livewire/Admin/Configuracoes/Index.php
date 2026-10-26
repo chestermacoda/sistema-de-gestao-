@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Configuracoes;
 use App\Models\Company;
 use App\Models\ConfiguracaoFinanceira;
 use App\Models\NotificacaoConfiguracao;
+use App\Models\zona_distribuicao;
 use App\Models\Tarifa;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -69,6 +70,21 @@ class Index extends Component
     public $novo_cadastro = false;
 
     public $relatorio_semanal = false;
+
+    /*
+    |--------------------------------------------------------------------------
+    | INIT
+    |--------------------------------------------------------------------------
+    */
+
+    public $modal = '';
+    public $modalTipo = '';
+
+    public $idzona = '';
+    public $nomezona = '';
+    public $descricaozona = '';
+    public $statuszona = '';
+
 
     /*
     |--------------------------------------------------------------------------
@@ -209,6 +225,17 @@ class Index extends Component
         $this->dispatch('openModal', 'modal-tarifa');
     }
 
+    public function editZona($id)
+    {
+        $data = zona_distribuicao::where('id', $id)->first();
+        $this->idzona = $id;
+        $this->nomezona = $data->nome;
+        $this->descricaozona = $data->descricao;
+        $this->statuszona = $data->status;
+
+        $this->dispatch('openModal', 'modal-zona_distribuicao');
+    }
+
     public function saveupdate()
     {
         $this->validate([
@@ -257,6 +284,44 @@ class Index extends Component
 
         session()->flash('success', 'Logo atualizado com sucesso!');
     }
+
+    public function savezona(){
+
+          
+        $this->salvarZona();
+        
+    }
+    public function salvarZona(){
+        $this->validate([
+            'nomezona'=>'required',
+            'descricaozona'=>'required',
+            'statuszona'=>'required',
+        ],[
+           'nomezona.required'=>'Preencha o campo nome', 
+           'descricaozona.required'=>'Preencha o campo descricao', 
+           'statuszona.required'=>'Escolha o status', 
+        ]);
+       
+        zona_distribuicao::updateOrCreate([
+            'id' => $this->idzona ?? null
+        ], [
+            'nome' => $this->nomezona,
+            'descricao' => $this->descricaozona,
+            'status' => $this->statuszona,
+        ]);
+        $this->dispatch('showToast', [
+            'message' => 'Zona Adicionada com sucesso!',
+            'type' => 'success'
+        ]);
+        $this->dispatch('closeModal', 'modal-zona_distribuicao');
+        $this->reset([
+            'nomezona',
+            'descricaozona',
+            'statuszona'
+        ]);
+    }
+
+
     public function render()
     {
 
@@ -289,8 +354,12 @@ class Index extends Component
         $this->dias_tolerancia = $config->dias_tolerancia;
         $this->dias_geracao = $config->dias_geracao;
 
+
+        $zona = zona_distribuicao::where('status','activo')->get();
+
         return view('Livewire.admin.Configuracoes.Index', [
-            'tarifass' => Tarifa::all()
+            'tarifass' => Tarifa::all(),
+            'zona'=>$zona,
         ]);
     }
 }

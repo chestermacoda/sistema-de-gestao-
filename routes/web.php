@@ -84,6 +84,11 @@ Route::middleware(['auth', 'role:Admin|Super Admin|Financeiro'])->group(function
     Route::get('/Permissoes', App\Livewire\Admin\Permissoes\Index::class)->name('admin.permissoes');
 
     Route::get('/Roteiro', App\Livewire\Admin\Roteiro\Index::class)->name('admin.roteiro');
+
+    Route::get('/Relatorio', App\Livewire\Admin\Relatorio\Index::class)->name('admin.relatorio');
+
+
+    Route::get('/Relatorio/exportar', [\App\Http\Controllers\RelatorioExportController::class, 'download'])->name('admin.relatorio.export');
 });
 
 

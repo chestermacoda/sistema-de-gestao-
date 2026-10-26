@@ -483,6 +483,6 @@ class EditarCliente extends Component
 
     public function render()
     {
-        return view('Livewire.admin.Clientes.Editar-cliente');
+        return view('Livewire.Admin.Clientes.Editar-cliente');
     }
 }

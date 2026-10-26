@@ -19,17 +19,6 @@
                  </svg>
                  Dashboard
              </a>
-             <a href="{{ route('admin.clientes') }}"
-                 class="nav-item {{ request()->routeIs('admin.clientes') ? 'active' : '' }}">
-                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2">
-                     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                     <circle cx="9" cy="7" r="4" />
-                     <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                 </svg>
-                 Clientes
-             </a>
              <a href="{{ route('admin.medidores') }}"
                  class="nav-item {{ request()->routeIs('admin.medidores') ? 'active' : '' }}">
                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -71,35 +60,61 @@
              </a>
          </div>
          <div class="nav-section">
-             <div class="nav-section-title">Sistema</div>
-             <a href="{{ route('admin.roteiro') }}"
-                 class="nav-item {{ request()->routeIs('admin.roteiro') ? 'active' : '' }}">
+             <div class="nav-section-title">Gestão</div>
+
+             <!-- Clientes: mantém o ícone de grupo (users) -->
+             <a href="{{ route('admin.clientes') }}"
+                 class="nav-item {{ request()->routeIs('admin.clientes') ? 'active' : '' }}">
                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                      stroke-width="2">
                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                      <circle cx="9" cy="7" r="4" />
                      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                  </svg>
-                 Roteiro de Leituristas
+                 Clientes
              </a>
+
+             <!-- Usuários: ícone de usuário individual com engrenagem -->
              <a href="{{ route('admin.usuarios') }}"
                  class="nav-item {{ request()->routeIs('admin.usuarios') ? 'active' : '' }}">
                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                      stroke-width="2">
-                     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                     <circle cx="9" cy="7" r="4" />
-                     <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                     <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                     <circle cx="12" cy="7" r="4" />
+                     <path d="M17.5 8.5l1.5 1.5" />
+                     <path d="M20 6l-1.5 1.5" />
+                     <path d="M14 6l1.5 1.5" />
+                     <path d="M17.5 5.5l1.5-1.5" />
                  </svg>
-                 Gestão de Usuários
+                 Usuários
              </a>
-             <a href="{{ route('admin.permissoes') }}"
-                 class="nav-item {{ request()->routeIs('admin.permissoes') ? 'active' : '' }}">
+
+             <!-- Roteiro de Leituristas: ícone de mapa/rota -->
+             <a href="{{ route('admin.roteiro') }}"
+                 class="nav-item {{ request()->routeIs('admin.roteiro') ? 'active' : '' }}">
                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                      stroke-width="2">
-                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                     <polygon points="3 11 22 2 13 21 11 13 3 11" />
                  </svg>
-                 Permissões & Roles
+                 Roteiro de Leituristas
              </a>
+
+             <!-- Relatórios: ícone de gráfico/bar-chart -->
+             <a href="{{ route('admin.relatorio') }}"
+                 class="nav-item {{ request()->routeIs('admin.relatorio') ? 'active' : '' }}">
+                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2">
+                     <line x1="18" x2="18" y1="20" y2="10" />
+                     <line x1="12" x2="12" y1="20" y2="4" />
+                     <line x1="6" x2="6" y1="20" y2="14" />
+                 </svg>
+                 Relatórios
+             </a>
+         </div>
+         <div class="nav-section">
+             <div class="nav-section-title">Sistema</div>
+
              <a href="{{ route('admin.configuracoes') }}"
                  class="nav-item {{ request()->routeIs('admin.configuracoes') ? 'active' : '' }}">
                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -110,6 +125,24 @@
                  </svg>
                  Configurações
              </a>
+             <a href="{{ route('admin.configuracoes') }}"
+                 class="nav-item {{ request()->routeIs('admin.configuracoes') ? 'active' : '' }}">
+                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2">
+                     <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                     <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                 </svg>
+
+                 Notificações
+             </a>
+             <a href="{{ route('admin.permissoes') }}"
+                 class="nav-item {{ request()->routeIs('admin.permissoes') ? 'active' : '' }}">
+                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2">
+                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                 </svg>
+                 Permissões & Roles
+             </a>
          </div>
      </nav>
      <div class="sidebar-footer">
@@ -118,7 +151,7 @@
              <div class="user-avatar">AD</div>
              <div class="user-info">
                  <div class="user-name">Admin Master</div>
-                 <div class="user-role">Super Administrador</div>
+                 <div class="user-role">{{ Auth()->user()->email }}</div>
              </div>
          </div>
      </div>
@@ -169,11 +202,11 @@
                          <div class="header-profile-avatar-lg">AD</div>
                          <div class="header-profile-details">
                              <span class="header-profile-name-lg">Admin Master</span>
-                             <span class="header-profile-email">admin@aquanexus.com.br</span>
+                             <span class="header-profile-email">{{ Auth()->user()->email }}</span>
                          </div>
                      </div>
                      <div class="header-profile-divider"></div>
-                     <a href="perfil.html" class="header-profile-item">
+                     <a href="{{ route('admin.perfil') }}" class="header-profile-item">
                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                              stroke="currentColor" stroke-width="2">
                              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -181,7 +214,7 @@
                          </svg>
                          Meu Perfil
                      </a>
-                     <a href="configuracao.html" class="header-profile-item">
+                     <a href="{{ route('admin.configuracoes') }}" class="header-profile-item">
                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                              stroke="currentColor" stroke-width="2">
                              <path

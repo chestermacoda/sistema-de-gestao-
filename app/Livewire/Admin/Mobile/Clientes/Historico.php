@@ -219,6 +219,6 @@ class Historico extends Component
 
     public function render()
     {
-        return view('livewire.admin.mobile.clientes.historico');
+        return view('Livewire.Admin.Mobile.Clientes.Historico');
     }
 }

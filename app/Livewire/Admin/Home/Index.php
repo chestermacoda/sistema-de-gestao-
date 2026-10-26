@@ -514,13 +514,16 @@ class Index extends Component
             ->get();
 
         foreach ($faturasCriticas as $fatura) {
-            $alertas[] = [
-                'tipo' => 'warning',
-                'titulo' => 'Fatura crítica vencida',
-                'descricao' => "Cliente {$fatura->cliente->nome_completo} — MZN " . number_format($fatura->valor_total, 2, ',', '.'),
-                'tempo' => 'Vencida há ' . $fatura->data_vencimento->diffInDays(Carbon::now()) . ' dias',
-                'icone' => 'file-warning',
-            ];
+            $cliente = $fatura->cliente ?? null;
+            if ($cliente) {
+                $alertas[] = [
+                    'tipo' => 'warning',
+                    'titulo' => 'Fatura crítica vencida',
+                    'descricao' => "Cliente {$fatura->cliente->nome_completo} — MZN " . number_format($fatura->valor_total, 2, ',', '.'),
+                    'tempo' => 'Vencida há ' . $fatura->data_vencimento->diffInDays(Carbon::now()) . ' dias',
+                    'icone' => 'file-warning',
+                ];
+            }
         }
 
         // Medidores com problema

@@ -267,6 +267,6 @@ class VerCliente extends Component
     }
     public function render()
     {
-        return view('livewire.admin.clientes.ver-cliente');
+        return view('Livewire.Admin.Clientes.Ver-cliente');
     }
 }

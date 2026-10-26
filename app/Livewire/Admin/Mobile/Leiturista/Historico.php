@@ -73,7 +73,7 @@ class Historico extends Component
     }
     public function render()
     {
-        return view('livewire.admin.mobile.leiturista.historico', [
+        return view('Livewire.Admin.Mobile.Leiturista.Historico', [
             'leituras' => $this->leituras
         ]);
     }

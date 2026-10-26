@@ -98,7 +98,7 @@ class Leituristas
 
             // $data['medidores_id'] = $medidor->id;
             // $data['cliente_id'] = $data['idCliente'];
-            $data['leitura_anterior'] = $data['ultimaLeitura'];
+            $data['leitura_anterior'] = $data['ultimaLeitura'] ?? 0;
 
 
             $data['consumo'] = max(0, $data['leitura_atual'] - $data['ultimaLeitura']);
@@ -114,9 +114,11 @@ class Leituristas
 
             // Sistema Dashboard
             // 1, 2 e 3... (Seu código de cálculos e análise de anomalias permanece igual)
-            $data['leitura_anterior'] = $data['ultimaLeitura'];
+            $data['leitura_anterior'] = $data['ultimaLeitura'] ?? 0;
 
             $data['consumo'] = max(0, $data['leitura_atual'] - $data['leitura_anterior']);
+
+
 
             $data['consumo_medio'] = $this->ConsumoMedio($data['medidores_id']);
 

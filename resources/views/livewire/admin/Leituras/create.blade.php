@@ -43,7 +43,6 @@
 
                          </option>
                      @endforeach
-
                  </select>
                  @error('medidores_id')
                      <small style="color: var(--danger)">{{ $message }}</small>

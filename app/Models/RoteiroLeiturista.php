@@ -54,7 +54,7 @@ class RoteiroLeiturista extends Model
     }
     public function cliente()
     {
-        return $this->belongsTo(cliente::class);
+        return $this->belongsTo(Cliente::class);
     }
     public function medidores()
     {

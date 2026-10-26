@@ -370,7 +370,7 @@ class Lroteiro extends Component
 
         $percentual = $total > 0 ? round(($concluidos / $total) * 100) : 0;
 
-        return view('livewire.admin.mobile.leiturista.lroteiro', [
+        return view('Livewire.Admin.Mobile.Leiturista.lroteiro', [
             'roteiros' => $roteiros,
             'total' => $total,
             'concluidos' => $concluidos,
