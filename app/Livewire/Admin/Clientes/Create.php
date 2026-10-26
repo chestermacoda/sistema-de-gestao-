@@ -7,6 +7,7 @@ use App\Models\ClienteMedidor;
 use App\Models\zona_distribuicao;
 use App\Models\Medidores;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 
 class Create extends Component
