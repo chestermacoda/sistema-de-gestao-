@@ -7,6 +7,7 @@ use App\Models\ClienteMedidor;
 use App\Models\zona_distribuicao;
 use App\Models\Medidores;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 
 class Create extends Component
@@ -51,7 +52,7 @@ class Create extends Component
 
     public $ponto_referencia;
 
-    public $latitude =1;
+    public $latitude = 1;
 
     public $longitude = 1;
 
@@ -346,6 +347,7 @@ class Create extends Component
                 'observacoes' => $this->observacoes,
 
                 'status' => 'Ativo',
+                'password' => Hash::make('123456'),
             ]);
 
             /**
@@ -415,7 +417,7 @@ class Create extends Component
             ->pluck('marca');
         return view('Livewire.Admin.Clientes.Create', [
             'marcas' => $marcas,
-               'zona'=>zona_distribuicao::all(),
+            'zona' => zona_distribuicao::all(),
         ]);
     }
 }
