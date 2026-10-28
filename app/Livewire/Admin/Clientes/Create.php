@@ -348,7 +348,10 @@ class Create extends Component
 
                 'status' => 'Ativo',
                 'password' => Hash::make('123456')
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8bc96a929094d3f432ef3d1c6a51e8dd2304df83
             ]);
 
             /**
